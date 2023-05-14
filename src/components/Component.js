@@ -1,4 +1,4 @@
-import Accordian from "./partials/accordian/Preview";
+
 import Rating from "./rating/Rating";
 import {
   Block,
@@ -18,9 +18,9 @@ import TooltipComponent from "./tooltip/Tooltip";
 import Table from "./table/Table";
 import { SpecialTable, OrderTable, LoginLogTable } from "./table/SpecialTable";
 import { PreviewCard, PreviewTable, PreviewAltCard, CodeBlock } from "./preview/Preview";
-import { LineChartExample, BarChartExample, PieChartExample, DoughnutExample, PolarExample } from "./charts/Chart";
+
 import NioIconCard from "./partials/nioIcon/NioIcon";
-import { ProjectCard, ProjectBody, ProjectHead } from "./partials/project-card/ProjectCard";
+
 import UserAvatar from "./user/UserAvatar";
 import UserGroup from "./user/UserGroup";
 import PaginationComponent from "../components/pagination/Pagination";
@@ -45,7 +45,7 @@ import ReactDataTable from "./table/ReactDataTable";
 import RSelect from "./select/ReactSelect";
 
 export {
-  Accordian,
+ 
   LinkItem,
   LinkList,
   OverlineTitle,
@@ -81,15 +81,13 @@ export {
   TooltipComponent,
   SpecialTable,
   Knob,
-  LineChartExample,
-  BarChartExample,
-  PieChartExample,
-  DoughnutExample,
-  PolarExample,
+ 
+
+  
+  
+ 
   NioIconCard,
-  ProjectCard,
-  ProjectBody,
-  ProjectHead,
+
   DataTableRow,
   DataTableItem,
   DataTableHead,

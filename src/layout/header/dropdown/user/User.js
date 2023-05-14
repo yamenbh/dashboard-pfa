@@ -26,7 +26,7 @@ const User = () => {
           <UserAvatar icon="user-alt" className="sm" />
           <div className="user-info d-none d-md-block">
             <div className="user-status">Administrator</div>
-            <div className="user-name dropdown-indicator">Abu Bin Ishityak</div>
+            <div className="user-name dropdown-indicator">Aymane Ait El Bhiri</div>
           </div>
         </div>
       </DropdownToggle>
@@ -37,7 +37,7 @@ const User = () => {
               <span>AB</span>
             </div>
             <div className="user-info">
-              <span className="lead-text">Abu Bin Ishtiyak</span>
+              <span className="lead-text">Aymane Ait El Bhiri</span>
               <span className="sub-text">info@softnio.com</span>
             </div>
           </div>
@@ -46,13 +46,7 @@ const User = () => {
           <LinkList>
             <LinkItem link="/user-profile-regular" icon="user-alt" onClick={toggle}>
               View Profile
-            </LinkItem>
-            <LinkItem link="/user-profile-setting" icon="setting-alt" onClick={toggle}>
-              Account Setting
-            </LinkItem>
-            <LinkItem link="/user-profile-activity" icon="activity-alt" onClick={toggle}>
-              Login Activity
-            </LinkItem>
+            </LinkItem>   
           </LinkList>
         </div>
         <div className="dropdown-inner">

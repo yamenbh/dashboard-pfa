@@ -7,7 +7,7 @@ const Footer = () => {
         <div className="nk-footer-wrap">
           <div className="nk-footer-copyright">
             {" "}
-            &copy; 2023 NextClass. Template by <a href="https://softnio.com">WEARENEXTDIGITAL</a>
+            &copy; 2023 NextClass. Template by <a href="www.wearenextdigital">WEARENEXTDIGITAL</a>
           </div>
         </div>
       </div>

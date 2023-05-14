@@ -219,9 +219,7 @@ const PanelItem = ({ icon, link, text, subPanel, index, data, setMenuData, ...pr
         <MenuHeading heading="Return to" />
         <li className={menuItemClass}>
           <Link to={`${process.env.PUBLIC_URL}/`} className="nk-menu-link" onClick={() => setMenuData(menu)}>
-            <span className="nk-menu-icon">
-              <Icon name="dashlite-alt" />
-            </span>
+             
             <span className="nk-menu-text">Main Dashboard</span>
           </Link>
         </li>

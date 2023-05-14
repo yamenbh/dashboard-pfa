@@ -13,9 +13,9 @@ import {
   Row,
   Col,
   Button,
-  RSelect,
+  
 } from "../../../components/Component";
-import { countryOptions, userData } from "./UserData";
+import { userData } from "./UserData";
 import { getDateStructured } from "../../../utils/Utils";
 
 const UserProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
@@ -131,78 +131,9 @@ const UserProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
               </span>
             </div>
           </div>
-          <div className="data-item" onClick={() => setModal(true)}>
-            <div className="data-col">
-              <span className="data-label">Address</span>
-              <span className="data-value">
-                {userInfo.address},
-                <br />
-                {userInfo.state}, {userInfo.country}
-              </span>
-            </div>
-            <div className="data-col data-col-end">
-              <span className="data-more">
-                <Icon name="forward-ios"></Icon>
-              </span>
-            </div>
-          </div>
+        
         </div>
-        <div className="nk-data data-list">
-          <div className="data-head">
-            <h6 className="overline-title">Preferences</h6>
-          </div>
-          <div className="data-item">
-            <div className="data-col">
-              <span className="data-label">Language</span>
-              <span className="data-value">English (United State)</span>
-            </div>
-            <div className="data-col data-col-end">
-              <a
-                href="#language"
-                onClick={(ev) => {
-                  ev.preventDefault();
-                }}
-                className="link link-primary"
-              >
-                Change Language
-              </a>
-            </div>
-          </div>
-          <div className="data-item">
-            <div className="data-col">
-              <span className="data-label">Date Format</span>
-              <span className="data-value">MM/DD/YYYY</span>
-            </div>
-            <div className="data-col data-col-end">
-              <a
-                href="#link"
-                onClick={(ev) => {
-                  ev.preventDefault();
-                }}
-                className="link link-primary"
-              >
-                Change
-              </a>
-            </div>
-          </div>
-          <div className="data-item">
-            <div className="data-col">
-              <span className="data-label">Timezone</span>
-              <span className="data-value">Bangladesh (GMT +6)</span>
-            </div>
-            <div className="data-col data-col-end">
-              <a
-                href="#link"
-                onClick={(ev) => {
-                  ev.preventDefault();
-                }}
-                className="link link-primary"
-              >
-                Change
-              </a>
-            </div>
-          </div>
-        </div>
+       
       </Block>
 
       <Modal isOpen={modal} className="modal-dialog-centered" size="lg" toggle={() => setModal(false)}>
@@ -309,14 +240,7 @@ const UserProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
                       />
                     </div>
                   </Col>
-                  <Col size="12">
-                    <div className="custom-control custom-switch">
-                      <input type="checkbox" className="custom-control-input" id="latest-sale" />
-                      <label className="custom-control-label" htmlFor="latest-sale">
-                        Use full name to display{" "}
-                      </label>
-                    </div>
-                  </Col>
+                
                   <Col size="12">
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
@@ -347,94 +271,7 @@ const UserProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
                   </Col>
                 </Row>
               </div>
-              <div className={`tab-pane ${modalTab === "2" ? "active" : ""}`} id="address">
-                <Row className="gy-4">
-                  <Col md="6">
-                    <div className="form-group">
-                      <label className="form-label" htmlFor="address-l1">
-                        Address Line 1
-                      </label>
-                      <input
-                        type="text"
-                        id="address-l1"
-                        name="address"
-                        onChange={(e) => onInputChange(e)}
-                        defaultValue={formData.address}
-                        className="form-control"
-                      />
-                    </div>
-                  </Col>
-                  <Col md="6">
-                    <div className="form-group">
-                      <label className="form-label" htmlFor="address-l2">
-                        Address Line 2
-                      </label>
-                      <input
-                        type="text"
-                        id="address-l2"
-                        name="address2"
-                        onChange={(e) => onInputChange(e)}
-                        defaultValue={formData.address2}
-                        className="form-control"
-                      />
-                    </div>
-                  </Col>
-                  <Col md="6">
-                    <div className="form-group">
-                      <label className="form-label" htmlFor="address-st">
-                        State
-                      </label>
-                      <input
-                        type="text"
-                        id="address-st"
-                        name="state"
-                        onChange={(e) => onInputChange(e)}
-                        defaultValue={formData.state}
-                        className="form-control"
-                      />
-                    </div>
-                  </Col>
-                  <Col md="6">
-                    <div className="form-group">
-                      <label className="form-label" htmlFor="address-county">
-                        Country
-                      </label>
-                      <RSelect
-                        options={countryOptions}
-                        placeholder="Select a country"
-                        defaultValue={[
-                          {
-                            value: formData.country,
-                            label: formData.country,
-                          },
-                        ]}
-                        onChange={(e) => setFormData({ ...formData, country: e.value })}
-                      />
-                    </div>
-                  </Col>
-                  <Col size="12">
-                    <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
-                      <li>
-                        <Button color="primary" size="lg" onClick={() => submitForm()}>
-                          Update Address
-                        </Button>
-                      </li>
-                      <li>
-                        <a
-                          href="#dropdownitem"
-                          onClick={(ev) => {
-                            ev.preventDefault();
-                            setModal(false);
-                          }}
-                          className="link link-light"
-                        >
-                          Cancel
-                        </a>
-                      </li>
-                    </ul>
-                  </Col>
-                </Row>
-              </div>
+            
             </div>
           </div>
         </ModalBody>

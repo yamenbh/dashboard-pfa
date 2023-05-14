@@ -20,11 +20,7 @@ const Header = ({ fixed, theme, className, setVisibility, ...props }) => {
       <div className="container-fluid">
         <div className="nk-header-wrap">
           <div className="nk-menu-trigger d-xl-none ms-n1">
-            <Toggle
-              className="nk-nav-toggle nk-quick-nav-icon d-xl-none ms-n1"
-              icon="menu"
-              click={props.sidebarToggle}
-            />
+            <Toggle className="nk-nav-toggle nk-quick-nav-icon d-xl-none ms-n1" icon="menu" click={props.sidebarToggle}/>
           </div>
           <div className="nk-header-brand d-xl-none">
             <Logo />

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import Content from "../../../layout/content/Content";
 import Head from "../../../layout/head/Head";
 import { findUpper } from "../../../utils/Utils";
-import { userData, filterRole, filterStatus } from "./UserData";
+import { userData, filterStatus } from "./UserData";
 import {
   DropdownMenu,
   DropdownToggle,
@@ -21,7 +21,6 @@ import {
   BlockHeadContent,
   BlockTitle,
   Icon,
-  Row,
   Col,
   UserAvatar,
   PaginationComponent,
@@ -44,7 +43,6 @@ const UserListCompact = () => {
   const [data, setData] = contextData;
 
   const [sm, updateSm] = useState(false);
-  const [tablesm, updateTableSm] = useState(false);
   const [onSearch, setonSearch] = useState(true);
   const [onSearchText, setSearchText] = useState("");
   const [modal, setModal] = useState({
@@ -61,20 +59,9 @@ const UserListCompact = () => {
   });
   const [actionText, setActionText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemPerPage, setItemPerPage] = useState(10);
-  const [sort, setSortState] = useState("");
+  const [itemPerPage] = useState(10);
 
-  // Sorting data
-  const sortFunc = (params) => {
-    let defaultData = data;
-    if (params === "asc") {
-      let sortedData = defaultData.sort((a, b) => a.name.localeCompare(b.name));
-      setData([...sortedData]);
-    } else if (params === "dsc") {
-      let sortedData = defaultData.sort((a, b) => b.name.localeCompare(a.name));
-      setData([...sortedData]);
-    }
-  };
+  
 
   // unselects the data on mount
   useEffect(() => {
@@ -352,189 +339,7 @@ const UserListCompact = () => {
                         <Icon name="search"></Icon>
                       </a>
                     </li>
-                    <li className="btn-toolbar-sep"></li>
-                    <li>
-                      <div className="toggle-wrap">
-                        <Button
-                          className={`btn-icon btn-trigger toggle ${tablesm ? "active" : ""}`}
-                          onClick={() => updateTableSm(true)}
-                        >
-                          <Icon name="menu-right"></Icon>
-                        </Button>
-                        <div className={`toggle-content ${tablesm ? "content-active" : ""}`}>
-                          <ul className="btn-toolbar gx-1">
-                            <li className="toggle-close">
-                              <Button className="btn-icon btn-trigger toggle" onClick={() => updateTableSm(false)}>
-                                <Icon name="arrow-left"></Icon>
-                              </Button>
-                            </li>
-                            <li>
-                              <UncontrolledDropdown>
-                                <DropdownToggle tag="a" className="btn btn-trigger btn-icon dropdown-toggle">
-                                  <div className="dot dot-primary"></div>
-                                  <Icon name="filter-alt"></Icon>
-                                </DropdownToggle>
-                                <DropdownMenu
-                                  end
-                                  className="filter-wg dropdown-menu-xl"
-                                  style={{ overflow: "visible" }}
-                                >
-                                  <div className="dropdown-head">
-                                    <span className="sub-title dropdown-title">Filter Users</span>
-                                    <div className="dropdown">
-                                      <DropdownItem
-                                        href="#more"
-                                        onClick={(ev) => {
-                                          ev.preventDefault();
-                                        }}
-                                        className="btn btn-sm btn-icon"
-                                      >
-                                        <Icon name="more-h"></Icon>
-                                      </DropdownItem>
-                                    </div>
-                                  </div>
-                                  <div className="dropdown-body dropdown-body-rg">
-                                    <Row className="gx-6 gy-3">
-                                      <Col size="6">
-                                        <div className="custom-control custom-control-sm custom-checkbox">
-                                          <input
-                                            type="checkbox"
-                                            className="custom-control-input"
-                                            id="hasBalance"
-                                          />
-                                          <label className="custom-control-label" htmlFor="hasBalance">
-                                            {" "}
-                                            Have Balance
-                                          </label>
-                                        </div>
-                                      </Col>
-                                      <Col size="6">
-                                        <div className="custom-control custom-control-sm custom-checkbox">
-                                          <input
-                                            type="checkbox"
-                                            className="custom-control-input"
-                                            id="hasKYC"
-                                          />
-                                          <label className="custom-control-label" htmlFor="hasKYC">
-                                            {" "}
-                                            KYC Verified
-                                          </label>
-                                        </div>
-                                      </Col>
-                                      <Col size="6">
-                                        <div className="form-group">
-                                          <label className="overline-title overline-title-alt">Role</label>
-                                          <RSelect options={filterRole} placeholder="Any Role" />
-                                        </div>
-                                      </Col>
-                                      <Col size="6">
-                                        <div className="form-group">
-                                          <label className="overline-title overline-title-alt">Status</label>
-                                          <RSelect options={filterStatus} placeholder="Any Status" />
-                                        </div>
-                                      </Col>
-                                      <Col size="12">
-                                        <div className="form-group">
-                                          <Button color="secondary">Filter</Button>
-                                        </div>
-                                      </Col>
-                                    </Row>
-                                  </div>
-                                  <div className="dropdown-foot between">
-                                    <a
-                                      href="#reset"
-                                      onClick={(ev) => {
-                                        ev.preventDefault();
-                                      }}
-                                      className="clickable"
-                                    >
-                                      Reset Filter
-                                    </a>
-                                    <a
-                                      href="#save"
-                                      onClick={(ev) => {
-                                        ev.preventDefault();
-                                      }}
-                                    >
-                                      Save Filter
-                                    </a>
-                                  </div>
-                                </DropdownMenu>
-                              </UncontrolledDropdown>
-                            </li>
-                            <li>
-                              <UncontrolledDropdown>
-                                <DropdownToggle tag="a" className="btn btn-trigger btn-icon dropdown-toggle">
-                                  <Icon name="setting"></Icon>
-                                </DropdownToggle>
-                                <DropdownMenu end className="dropdown-menu-xs">
-                                  <ul className="link-check">
-                                    <li>
-                                      <span>Show</span>
-                                    </li>
-                                    <li className={itemPerPage === 10 ? "active" : ""}>
-                                      <DropdownItem
-                                        tag="a"
-                                        href="#dropdownitem"
-                                        onClick={(ev) => {
-                                          ev.preventDefault();
-                                          setItemPerPage(10);
-                                        }}
-                                      >
-                                        10
-                                      </DropdownItem>
-                                    </li>
-                                    <li className={itemPerPage === 15 ? "active" : ""}>
-                                      <DropdownItem
-                                        tag="a"
-                                        href="#dropdownitem"
-                                        onClick={(ev) => {
-                                          ev.preventDefault();
-                                          setItemPerPage(15);
-                                        }}
-                                      >
-                                        15
-                                      </DropdownItem>
-                                    </li>
-                                  </ul>
-                                  <ul className="link-check">
-                                    <li>
-                                      <span>Order</span>
-                                    </li>
-                                    <li className={sort === "dsc" ? "active" : ""}>
-                                      <DropdownItem
-                                        tag="a"
-                                        href="#dropdownitem"
-                                        onClick={(ev) => {
-                                          ev.preventDefault();
-                                          setSortState("dsc");
-                                          sortFunc("dsc");
-                                        }}
-                                      >
-                                        DESC
-                                      </DropdownItem>
-                                    </li>
-                                    <li className={sort === "asc" ? "active" : ""}>
-                                      <DropdownItem
-                                        tag="a"
-                                        href="#dropdownitem"
-                                        onClick={(ev) => {
-                                          ev.preventDefault();
-                                          setSortState("asc");
-                                          sortFunc("asc");
-                                        }}
-                                      >
-                                        ASC
-                                      </DropdownItem>
-                                    </li>
-                                  </ul>
-                                </DropdownMenu>
-                              </UncontrolledDropdown>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </li>
+                    
                   </ul>
                 </div>
               </div>
@@ -840,12 +645,7 @@ const UserListCompact = () => {
                   <Col md="6">
                     <div className="form-group">
                       <label className="form-label">Email </label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        name="email"
-                        defaultValue={formData.email}
-                        placeholder="Enter email"
+                      <input className="form-control" type="text" name="email" defaultValue={formData.email} placeholder="Enter email"
                         ref={register({
                           required: "This field is required",
                           pattern: {

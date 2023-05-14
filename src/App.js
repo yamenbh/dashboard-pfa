@@ -12,19 +12,19 @@ import Error504Classic from "./pages/error/504-classic";
 
 
 import Login from "./pages/auth/Login";
-import ForgotPassword from "./pages/auth/ForgotPassword";
+
 
 import InvoicePrint from "./pages/pre-built/invoice/InvoicePrint";
 
 const App = (props) => {
   return (
     <Switch>
-      {/* Auth Pages */}
+      {/* Auth Pages <span className="nk-menu-icon">
+              <Icon name="dashlite-alt" />
+            </span> */}
 
       <Route exact path={`${process.env.PUBLIC_URL}/auth-login`} component={Login}></Route>
-      <Route exact path={`${process.env.PUBLIC_URL}/auth-reset`} component={ForgotPassword}></Route>
-
-
+  
       {/* Print Pages */}
       <Route exact path={`${process.env.PUBLIC_URL}/invoice-print/:id`} component={InvoicePrint}></Route>
 
@@ -37,7 +37,7 @@ const App = (props) => {
       <Route exact path={`${process.env.PUBLIC_URL}/errors/504-classic`} component={Error504Classic}></Route>
 
       {/*Main Routes*/}
-      <PrivateRoute exact path="" component={Layout}></PrivateRoute>
+      <Route exact path="" component={Layout}></Route>
       <Route component={RedirectAs404}></Route>
     </Switch>
   );

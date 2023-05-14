@@ -5,7 +5,6 @@ import { RedirectAs404 } from "../utils/Utils";
 
 import Homepage from "../pages/Homepage";
 
-
 import UserListCompact from "../pages/pre-built/user-manage/UserListCompact";
 
 import InvoiceList from "../pages/pre-built/invoice/InvoiceList";
@@ -13,9 +12,6 @@ import InvoiceDetails from "../pages/pre-built/invoice/InvoiceDetails";
 
 import Calender from "../pages/app/calender/Calender";
 
-import UserListRegularPage from "../pages/pre-built/user-manage/UserListRegular";
-import UserContactCardPage from "../pages/pre-built/user-manage/UserContactCard";
-import UserDetailsPage from "../pages/pre-built/user-manage/UserDetailsRegular";
 import UserProfileLayout from "../pages/pre-built/user-manage/UserProfileLayout";
 
 const Pages = () => {
@@ -28,17 +24,6 @@ const Pages = () => {
       <Switch>
         {/*Panel */}
 
-        {/*Pre-built Pages*/}
-        <Route //Context Api added
-          exact
-          path={`${process.env.PUBLIC_URL}/user-list-regular`}
-          render={() => (
-            <UserContextProvider>
-              <UserListRegularPage />
-            </UserContextProvider>
-          )}
-        ></Route>
-       
         <Route //Context Api added
           exact
           path={`${process.env.PUBLIC_URL}/user-list-compact`}
@@ -48,32 +33,12 @@ const Pages = () => {
             </UserContextProvider>
           )}
         ></Route>
-        <Route //Context Api added
-          exact
-          path={`${process.env.PUBLIC_URL}/user-details-regular/:id`}
-          render={(props) => (
-            <UserContextProvider>
-              <UserDetailsPage {...props} />
-            </UserContextProvider>
-          )}
-        ></Route>
+        
         <Route exact path={`${process.env.PUBLIC_URL}/user-profile-regular/`} component={UserProfileLayout}></Route>
-        <Route
-          exact
-          path={`${process.env.PUBLIC_URL}/user-profile-notification/`}
-          component={UserProfileLayout}
-        ></Route>
+      
         <Route exact path={`${process.env.PUBLIC_URL}/user-profile-activity/`} component={UserProfileLayout}></Route>
         <Route exact path={`${process.env.PUBLIC_URL}/user-profile-setting/`} component={UserProfileLayout}></Route>
-        <Route //Context api added
-          exact
-          path={`${process.env.PUBLIC_URL}/user-contact-card`}
-          render={() => (
-            <UserContextProvider>
-              <UserContactCardPage />
-            </UserContextProvider>
-          )}
-        ></Route>
+        
         
 
         <Route exact path={`${process.env.PUBLIC_URL}/invoice-list`} component={InvoiceList}></Route>
