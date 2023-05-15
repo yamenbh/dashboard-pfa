@@ -32,6 +32,13 @@ const UserProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
     country: "Canada",
   });
   const [modal, setModal] = useState(false);
+  const [currentUser, setCurentUser] = useState()
+
+  useEffect(()=>{
+    const user = localStorage.getItem("currentUser")
+    setCurentUser(JSON.parse(user))
+    setFormData(JSON.parse(user))
+  }, [])
 
   useEffect(() => {
     setProfileName(formData.name);
@@ -79,7 +86,7 @@ const UserProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
           <div className="data-item" onClick={() => setModal(true)}>
             <div className="data-col">
               <span className="data-label">Full Name</span>
-              <span className="data-value">{userInfo.name}</span>
+              <span className="data-value">{currentUser?.name}</span>
             </div>
             <div className="data-col data-col-end">
               <span className="data-more">
@@ -90,7 +97,7 @@ const UserProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
           <div className="data-item" onClick={() => setModal(true)}>
             <div className="data-col">
               <span className="data-label">Display Name</span>
-              <span className="data-value">{userInfo.displayName}</span>
+              <span className="data-value">{currentUser?.name}</span>
             </div>
             <div className="data-col data-col-end">
               <span className="data-more">
@@ -101,7 +108,7 @@ const UserProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
           <div className="data-item">
             <div className="data-col">
               <span className="data-label">Email</span>
-              <span className="data-value">info@softnio.com</span>
+              <span className="data-value">{currentUser?.email}</span>
             </div>
             <div className="data-col data-col-end">
               <span className="data-more disable">
@@ -112,7 +119,7 @@ const UserProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
           <div className="data-item" onClick={() => setModal(true)}>
             <div className="data-col">
               <span className="data-label">Phone Number</span>
-              <span className="data-value text-soft">{userInfo.phone}</span>
+              <span className="data-value text-soft">{currentUser?.phone}</span>
             </div>
             <div className="data-col data-col-end">
               <span className="data-more">
@@ -122,22 +129,9 @@ const UserProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
           </div>
           <div className="data-item" onClick={() => setModal(true)}>
             <div className="data-col">
-              <span className="data-label">Date of Birth</span>
-              <span className="data-value">{userInfo.dob}</span>
-            </div>
-            <div className="data-col data-col-end">
-              <span className="data-more">
-                <Icon name="forward-ios"></Icon>
-              </span>
-            </div>
-          </div>
-          <div className="data-item" onClick={() => setModal(true)}>
-            <div className="data-col">
-              <span className="data-label">Address</span>
+              <span className="data-label">Major</span>
               <span className="data-value">
-                {userInfo.address},
-                <br />
-                {userInfo.state}, {userInfo.country}
+                {currentUser?.major}
               </span>
             </div>
             <div className="data-col data-col-end">
@@ -188,7 +182,7 @@ const UserProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
           <div className="data-item">
             <div className="data-col">
               <span className="data-label">Timezone</span>
-              <span className="data-value">Bangladesh (GMT +6)</span>
+              <span className="data-value">Maroc (GMT +1)</span>
             </div>
             <div className="data-col data-col-end">
               <a
@@ -232,18 +226,6 @@ const UserProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
                   Personal
                 </a>
               </li>
-              <li className="nav-item">
-                <a
-                  className={`nav-link ${modalTab === "2" && "active"}`}
-                  onClick={(ev) => {
-                    ev.preventDefault();
-                    setModalTab("2");
-                  }}
-                  href="#address"
-                >
-                  Address
-                </a>
-              </li>
             </ul>
             <div className="tab-content">
               <div className={`tab-pane ${modalTab === "1" ? "active" : ""}`} id="personal">
@@ -259,7 +241,7 @@ const UserProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
                         className="form-control"
                         name="name"
                         onChange={(e) => onInputChange(e)}
-                        defaultValue={formData.name}
+                        defaultValue={formData?.name}
                         placeholder="Enter Full name"
                       />
                     </div>
@@ -267,7 +249,7 @@ const UserProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
                   <Col md="6">
                     <div className="form-group">
                       <label className="form-label" htmlFor="display-name">
-                        Display Name
+                        Email
                       </label>
                       <input
                         type="text"
@@ -275,7 +257,7 @@ const UserProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
                         className="form-control"
                         name="displayName"
                         onChange={(e) => onInputChange(e)}
-                        defaultValue={formData.displayName}
+                        defaultValue={formData?.email}
                         placeholder="Enter display name"
                       />
                     </div>
@@ -286,26 +268,29 @@ const UserProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
                         Phone Number
                       </label>
                       <input
-                        type="number"
+                        type="text"
                         id="phone-no"
                         className="form-control"
                         name="phone"
                         onChange={(e) => onInputChange(e)}
-                        defaultValue={formData.phone}
+                        defaultValue={formData?.phone}
                         placeholder="Phone Number"
                       />
                     </div>
                   </Col>
                   <Col md="6">
                     <div className="form-group">
-                      <label className="form-label" htmlFor="birth-day">
-                        Date of Birth
+                      <label className="form-label" htmlFor="major">
+                        Major
                       </label>
-                      <DatePicker
-                        selected={new Date(formData.dob)}
+                      <input
+                        type="text"
+                        id="major-id"
                         className="form-control"
-                        onChange={(date) => setFormData({ ...formData, dob: getDateStructured(date) })}
-                        maxDate={new Date()}
+                        name="major"
+                        onChange={(e) => onInputChange(e)}
+                        defaultValue={formData?.major}
+                        placeholder="Major"
                       />
                     </div>
                   </Col>
@@ -329,94 +314,6 @@ const UserProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
                           }}
                         >
                           Update Profile
-                        </Button>
-                      </li>
-                      <li>
-                        <a
-                          href="#dropdownitem"
-                          onClick={(ev) => {
-                            ev.preventDefault();
-                            setModal(false);
-                          }}
-                          className="link link-light"
-                        >
-                          Cancel
-                        </a>
-                      </li>
-                    </ul>
-                  </Col>
-                </Row>
-              </div>
-              <div className={`tab-pane ${modalTab === "2" ? "active" : ""}`} id="address">
-                <Row className="gy-4">
-                  <Col md="6">
-                    <div className="form-group">
-                      <label className="form-label" htmlFor="address-l1">
-                        Address Line 1
-                      </label>
-                      <input
-                        type="text"
-                        id="address-l1"
-                        name="address"
-                        onChange={(e) => onInputChange(e)}
-                        defaultValue={formData.address}
-                        className="form-control"
-                      />
-                    </div>
-                  </Col>
-                  <Col md="6">
-                    <div className="form-group">
-                      <label className="form-label" htmlFor="address-l2">
-                        Address Line 2
-                      </label>
-                      <input
-                        type="text"
-                        id="address-l2"
-                        name="address2"
-                        onChange={(e) => onInputChange(e)}
-                        defaultValue={formData.address2}
-                        className="form-control"
-                      />
-                    </div>
-                  </Col>
-                  <Col md="6">
-                    <div className="form-group">
-                      <label className="form-label" htmlFor="address-st">
-                        State
-                      </label>
-                      <input
-                        type="text"
-                        id="address-st"
-                        name="state"
-                        onChange={(e) => onInputChange(e)}
-                        defaultValue={formData.state}
-                        className="form-control"
-                      />
-                    </div>
-                  </Col>
-                  <Col md="6">
-                    <div className="form-group">
-                      <label className="form-label" htmlFor="address-county">
-                        Country
-                      </label>
-                      <RSelect
-                        options={countryOptions}
-                        placeholder="Select a country"
-                        defaultValue={[
-                          {
-                            value: formData.country,
-                            label: formData.country,
-                          },
-                        ]}
-                        onChange={(e) => setFormData({ ...formData, country: e.value })}
-                      />
-                    </div>
-                  </Col>
-                  <Col size="12">
-                    <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
-                      <li>
-                        <Button color="primary" size="lg" onClick={() => submitForm()}>
-                          Update Address
                         </Button>
                       </li>
                       <li>

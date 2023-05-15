@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Block,
   BlockContent,
@@ -18,17 +18,28 @@ import AuthFooter from "./AuthFooter";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
+// users are static 
+import { users as Allusers} from "./loginInfo";
+
 const Login = () => {
+  const [users, setUsers] = useState(Allusers)
   const [loading, setLoading] = useState(false);
   const [passState, setPassState] = useState(false);
   const [errorVal, setError] = useState("");
 
+  useEffect(()=>{
+    // if users found in backend, we can init them here
+
+  })
+
   const onFormSubmit = (formData) => {
     setLoading(true);
-    const loginName = "info@softnio.com";
-    const pass = "123456";
-    if (formData.name === loginName && formData.passcode === pass) {
+    const myUser = users.find(user=>user.email == formData.name)
+    console.log(users)
+
+    if (myUser && formData.name === myUser.email && formData.passcode === myUser.password) {
       localStorage.setItem("accessToken", "token");
+      localStorage.setItem("currentUser", JSON.stringify(myUser));
       setTimeout(() => {
         window.history.pushState(
           `${process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "/"}`,

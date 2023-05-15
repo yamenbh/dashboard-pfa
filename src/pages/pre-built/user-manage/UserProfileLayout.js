@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useContext, useState, useEffect } from "react";
 import Content from "../../../layout/content/Content";
 import UserProfileRegularPage from "./UserProfileRegular";
 import UserProfileSettingPage from "./UserProfileSetting";
@@ -7,14 +7,41 @@ import UserProfileActivityPage from "./UserProfileActivity";
 import { Route, Switch, Link } from "react-router-dom";
 import { Icon, UserAvatar } from "../../../components/Component";
 import { findUpper } from "../../../utils/Utils";
+/* import { notes } from "./UserData";
+import { UserContext } from "./UserContext"; */
 import { Card, DropdownItem, UncontrolledDropdown, DropdownMenu, DropdownToggle } from "reactstrap";
 
-const UserProfileLayout = () => {
+const UserProfileLayout = ({match}) => {
+  //000000000000000000
+/*   const { contextData } = useContext(UserContext);
+  const [data] = contextData;
+  const [noteData, setNoteData] = useState(notes); */
+
+//0000000000000000000000000000
+
   const [sm, updateSm] = useState(false);
   const [mobileView, setMobileView] = useState(false);
-  const [profileName, setProfileName] = useState("Abu Bin Ishtiak");
+  const [profileName, setProfileName] = useState("ABIRA Fatiha");
+  const [currentUser, setCurentUser] = useState()
 
+  useEffect(()=>{
+    const user = localStorage.getItem("currentUser")
+    setCurentUser(JSON.parse(user))
+  }, [])
   // function to change the design view under 990 px
+   // grabs the id of the url and loads the corresponding data
+  
+  /*  useEffect(() => {
+    const id = match.params.id;
+    if (id !== undefined || null || "") {
+      let spUser = data.find((item) => item.id === Number(id));
+      setProfileName(spUser);
+    } else {
+      setProfileName(data[0]);
+    }
+  }, [match.params.id, data]); */
+ 
+  /////////////////////////////////
   const viewChange = () => {
     if (window.innerWidth < 990) {
       setMobileView(true);
@@ -39,6 +66,7 @@ const UserProfileLayout = () => {
 
   return (
     <React.Fragment>
+      
       <Content>
         <Card className="card-bordered">
           <div className="card-aside-wrap">
@@ -52,8 +80,8 @@ const UserProfileLayout = () => {
                   <div className="user-card">
                     <UserAvatar text={findUpper(profileName)} theme="primary" />
                     <div className="user-info">
-                      <span className="lead-text">{profileName}</span>
-                      <span className="sub-text">info@softnio.com</span>
+                      <span className="lead-text">{currentUser?.name}</span>
+                      <span className="sub-text">{currentUser?.email}</span>
                     </div>
                     <div className="user-action">
                       <UncontrolledDropdown>
@@ -92,20 +120,7 @@ const UserProfileLayout = () => {
                     </div>
                   </div>
                 </div>
-                <div className="card-inner">
-                  <div className="user-account-info py-0">
-                    <h6 className="overline-title-alt">Nio Wallet Account</h6>
-                    <div className="user-balance">
-                      12.395769 <small className="currency currency-btc">BTC</small>
-                    </div>
-                    <div className="user-balance-sub">
-                      Locked{" "}
-                      <span>
-                        0.344939 <span className="currency currency-btc">BTC</span>
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                
                 <div className="card-inner p-0">
                   <ul className="link-list-menu">
                     <li onClick={() => updateSm(false)}>
@@ -186,6 +201,7 @@ const UserProfileLayout = () => {
           </div>
         </Card>
       </Content>
+
     </React.Fragment>
   );
 };

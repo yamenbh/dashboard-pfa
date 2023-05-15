@@ -1,6 +1,6 @@
 import React from "react";
 import Head from "../../../layout/head/Head";
-import { Card,Badge  } from "reactstrap";
+import { Card,Badge, Row, Col, Modal, ModalBody  } from "reactstrap";
 import {
   Block,
   BlockBetween,
@@ -12,8 +12,22 @@ import {
   InputSwitch,
   Button,
 } from "../../../components/Component";
+import { useState } from "react";
 
 const UserProfileSettingPage = ({ sm, updateSm }) => {
+  const [modal, setModal] = useState(false);
+  const [formData, setFormData] = useState();
+  const onInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const submitForm = () => {
+    let submitData = {
+      ...formData,
+    };
+    console.log(formData)
+    setModal(false);
+  };
   return (
     <React.Fragment>
       <Head title="User List - Profile"></Head>
@@ -66,11 +80,11 @@ const UserProfileSettingPage = ({ sm, updateSm }) => {
                 <div className="nk-block-actions flex-shrink-sm-0">
                   <ul className="align-center flex-wrap flex-sm-nowrap gx-3 gy-2">
                     <li className="order-md-last">
-                      <Button color="primary">Change Password</Button>
+                      <Button onClick={()=>setModal(true)} color="primary">Change Password</Button>
                     </li>
                     <li>
                       <em className="text-soft text-date fs-12px">
-                        Last changed: <span>Oct 2, 2019</span>
+                        Last changed: <span>May 2, 2023</span>
                       </em>
                     </li>
                   </ul>
@@ -96,6 +110,99 @@ const UserProfileSettingPage = ({ sm, updateSm }) => {
           </div>
         </Card>
       </Block>
+      <Modal isOpen={modal} className="modal-dialog-centered" size="lg" toggle={() => setModal(false)}>
+        <ModalBody>
+          <a
+            href="#dropdownitem"
+            onClick={(ev) => {
+              ev.preventDefault();
+              setModal(false);
+            }}
+            className="close"
+          >
+            <Icon name="cross-sm"></Icon>
+          </a>
+          <div className="p-2">
+            <h5 className="title">Update Password</h5>
+            <div className="tab-content">
+                <Row className="gy-4">
+                  <Col md="12">
+                    <div className="form-group">
+                      <label className="form-label" htmlFor="full-name">
+                        Current Password
+                      </label>
+                      <input
+                        type="password"
+                        id="password"
+                        className="form-control"
+                        name="currentPassword"
+                        onChange={(e) => onInputChange(e)}
+                        defaultValue={formData?.currentPassword}
+                        placeholder="Enter your current the password.."
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label className="form-label" htmlFor="full-name">
+                        New Password
+                      </label>
+                      <input
+                        type="password"
+                        id="password"
+                        className="form-control"
+                        name="newpassword"
+                        onChange={(e) => onInputChange(e)}
+                        defaultValue={formData?.password}
+                        placeholder="Enter your new password"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label className="form-label" htmlFor="full-name">
+                        confirm Password
+                      </label>
+                      <input
+                        type="password"
+                        id="password"
+                        className="form-control"
+                        name="confirmpassword"
+                        onChange={(e) => onInputChange(e)}
+                        defaultValue={formData?.password}
+                        placeholder="Confirm your new password.."
+                      />
+                    </div>
+                  </Col>
+                  <Col size="12">
+                    <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
+                      <li>
+                        <Button
+                          color="primary"
+                          size="lg"
+                          onClick={(ev) => {
+                            ev.preventDefault();
+                            submitForm();
+                          }}
+                        >
+                          Change Password
+                        </Button>
+                      </li>
+                      <li>
+                        <a
+                          href="#dropdownitem"
+                          onClick={(ev) => {
+                            ev.preventDefault();
+                            setModal(false);
+                          }}
+                          className="link link-light"
+                        >
+                          Cancel
+                        </a>
+                      </li>
+                    </ul>
+                  </Col>
+                </Row>
+            </div>
+          </div>
+        </ModalBody>
+      </Modal>
     </React.Fragment>
   );
 };

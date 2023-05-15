@@ -72,14 +72,9 @@ const Calender = () => {
         <BlockHead size="sm">
           <BlockBetween>
             <BlockHeadContent>
-              <BlockTitle page>Calendar</BlockTitle>
+              <BlockTitle page>Planning exams</BlockTitle>
             </BlockHeadContent>
-            <BlockHeadContent>
-              <Button color="primary" onClick={toggle}>
-                <Icon name="plus" />
-                <span>Add Event</span>
-              </Button>
-            </BlockHeadContent>
+           
           </BlockBetween>
         </BlockHead>
         <Block>

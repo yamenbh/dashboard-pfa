@@ -42,4 +42,5 @@ const App = (props) => {
     </Switch>
   );
 };
+
 export default withRouter(App);
