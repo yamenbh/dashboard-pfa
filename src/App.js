@@ -17,6 +17,8 @@ import Login from "./pages/auth/Login";
 import InvoicePrint from "./pages/pre-built/invoice/InvoicePrint";
 
 const App = (props) => {
+
+  
   return (
     <Switch>
       {/* Auth Pages <span className="nk-menu-icon">

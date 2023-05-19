@@ -1,5 +1,4 @@
 
-import Rating from "./rating/Rating";
 import {
   Block,
   BlockHead,
@@ -53,11 +52,12 @@ export {
   OutlinedInput,
   Button,
   UserAvatar,
+
   UserGroup,
   InputSwitch,
   Block,
   BlockContent,
-  Rating,
+  
   PaginationComponent,
   ReactDualList,
   NSComponent,
@@ -81,10 +81,6 @@ export {
   TooltipComponent,
   SpecialTable,
   Knob,
- 
-
-  
-  
  
   NioIconCard,
 

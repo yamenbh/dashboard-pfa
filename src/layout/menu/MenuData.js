@@ -11,7 +11,12 @@ const menu = [
     text: "User Manage",
     active: false,
     link: "/user-list-compact",
-  
+  },
+  {
+    icon: "users",
+    text: "Student Manage",
+    active: false,
+    link: "/student-list-compact",
   },
  
   {
@@ -24,7 +29,7 @@ const menu = [
   
   {
     icon: "file-docs",
-    text: "Invitations",
+    text: "Convocations",
     active: false,
     link: "/invoice-list",
    

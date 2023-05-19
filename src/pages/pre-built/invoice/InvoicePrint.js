@@ -2,18 +2,22 @@ import React, { useState, useEffect } from "react";
 import { Button, Icon, Block } from "../../../components/Component";
 import Content from "../../../layout/content/Content";
 import Head from "../../../layout/head/Head";
-import LogoDark from "../../../images/logo-dark2x.png";
+import LogoDark from "../../../images/whatsapp.jpg";
 import { invoiceData } from "./Invoice";
-
+import QRCode from "react-qr-code";
 const InvoicePrint = ({ match }) => {
-  const [data] = useState(invoiceData);
-  const [user, setUser] = useState();
+  const [currentUser, setCurentUser] = useState()
+
+  useEffect(()=>{
+    const user = localStorage.getItem("currentUser")
+    setCurentUser(JSON.parse(user))
+  }, [])
 
   useEffect(() => {
     setTimeout(() => window.print(), 500);
   }, []);
 
-  useEffect(() => {
+  /* useEffect(() => {
     const id = match.params.id;
     if (id !== undefined || null || "") {
       let spUser = data.find((item) => item.id === Number(id));
@@ -22,11 +26,11 @@ const InvoicePrint = ({ match }) => {
       setUser(data[0]);
     }
   }, [match.params.id, data]);
-
+ */
   return (
     <body className="bg-white">
       <Head title="Invoice Print"></Head>
-      {user && (
+      {currentUser && (
         <Content>
           <Block>
             <div className="invoice invoice-print">
@@ -48,33 +52,32 @@ const InvoicePrint = ({ match }) => {
 
                 <div className="invoice-head">
                   <div className="invoice-contact">
-                    <span className="overline-title">Invoice To</span>
+                    <span className="overline-title">Convocation To</span>
                     <div className="invoice-contact-info">
-                      <h4 className="title">{user.name}</h4>
+                      <h4 className="title">{currentUser?.name}</h4>
                       <ul className="list-plain">
                         <li>
                           <Icon name="map-pin-fill"></Icon>
                           <span>
-                            House #65, 4328 Marion Street
-                            <br />
-                            Newbury, VT 05051
+                            The Engineering School
                           </span>
                         </li>
                         <li>
                           <Icon name="call-fill"></Icon>
-                          <span>{user.phone}</span>
+                          <span>{currentUser?.phone}</span>
                         </li>
                       </ul>
                     </div>
                   </div>
                   <div className="invoice-desc">
-                    <h3 className="title">Invoice</h3>
+                    <h3 className="title">Convocation</h3>
                     <ul className="list-plain">
                       <li className="invoice-id">
-                        <span>Invoice ID</span>:<span>{user.orderId}</span>
+                        <QRCode value= {currentUser?.orderId}/>
+                        <span>Convocation ID</span>:<span>{currentUser?.orderId}</span>
                       </li>
                       <li className="invoice-date">
-                        <span>Date</span>:<span>{user.date.split(",")[0]}</span>
+                        <span>Date</span>:<span>{currentUser?.dateExam.split(",")[0]}</span>
                       </li>
                     </ul>
                   </div>
@@ -82,76 +85,14 @@ const InvoicePrint = ({ match }) => {
 
                 <div className="invoice-bills">
                   <div className="table-responsive">
-                    <table className="table table-striped">
-                      <thead>
-                        <tr>
-                          <th className="w-150px">Item ID</th>
-                          <th className="w-60">Description</th>
-                          <th>Price</th>
-                          <th>Qty</th>
-                          <th>Amount</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>24108054</td>
-                          <td>Dashlite - Conceptual App Dashboard - Regular License</td>
-                          <td>${user.invoiceItem1}</td>
-                          <td>1</td>
-                          <td>${user.invoiceItem1}</td>
-                        </tr>
-                        <tr>
-                          <td>24108054</td>
-                          <td>24 months premium support</td>
-                          <td>${user.invoiceItem2}</td>
-                          <td>1</td>
-                          <td>${user.invoiceItem2}</td>
-                        </tr>
-                        <tr>
-                          <td>23604094</td>
-                          <td>Invest Management Dashboard - Regular License</td>
-                          <td>${user.invoiceItem3}</td>
-                          <td>1</td>
-                          <td>${user.invoiceItem3}</td>
-                        </tr>
-                        <tr>
-                          <td>23604094</td>
-                          <td>6 months premium support</td>
-                          <td>${user.invoiceItem4}</td>
-                          <td>1</td>
-                          <td>${user.invoiceItem4}</td>
-                        </tr>
-                      </tbody>
-                      <tfoot>
-                        <tr>
-                          <td colSpan="2"></td>
-                          <td colSpan="2">Subtotal</td>
-                          <td>
-                            $
-                            {Number(user.invoiceItem1) +
-                              Number(user.invoiceItem2) +
-                              Number(user.invoiceItem3) +
-                              Number(user.invoiceItem4) +
-                              ".00"}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td colSpan="2"></td>
-                          <td colSpan="2">Processing fee</td>
-                          <td>$10.00</td>
-                        </tr>
-                        <tr>
-                          <td colSpan="2"></td>
-                          <td colSpan="2">TAX</td>
-                          <td>$50.00</td>
-                        </tr>
-                        <tr>
-                          <td colSpan="2"></td>
-                          <td colSpan="2">Grand Total</td>
-                          <td>${user.totalAmount}</td>
-                        </tr>
-                      </tfoot>
-                    </table>
+                  <div>
+                      <p>
+                        Dear <span>{currentUser?.name}</span> , <br/>
+                      The exams will be held on <span className="invoice-date" >{currentUser?.dateExam}</span> and will cover the material taught throughout the semester. We ask that you arrive at least 30 minutes before the start of the exam to ensure that you have enough time to find your seat and get settled.
+
+<br/><br/>Please be aware that you will need to bring your student ID and any necessary materials (e.g. pens, pencils, calculators) to the exam. Additionally, electronic devices such as smartphones, laptops, or tablets are not allowed during the exam
+                      </p><br/>
+                    </div> 
                     <div className="nk-notes ff-italic fs-12px text-soft">
                       Invoice was created on a computer and is valid without the signature and seal.
                     </div>

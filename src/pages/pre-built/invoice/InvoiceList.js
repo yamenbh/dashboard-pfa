@@ -24,6 +24,13 @@ const InvoiceList = () => {
   const [itemPerPage, setItemPerPage] = useState(10);
   const [sort, setSortState] = useState("asc");
 
+  // apres
+  useEffect(()=>{
+    //fetch the server
+    
+    // setData(result)
+  },[])
+
   // Sorting data
   const sortFunc = () => {
     let defaultData = data;
@@ -71,9 +78,9 @@ const InvoiceList = () => {
         <BlockHead size="sm">
           <BlockBetween>
             <BlockHeadContent>
-              <BlockTitle page>Invoices</BlockTitle>
+              <BlockTitle page>Convocations</BlockTitle>
               <BlockDes className="text-soft">
-                <p>You have total 937 invoices.</p>
+                <p>You have total 2 Convocations.</p>
               </BlockDes>
             </BlockHeadContent>
             <BlockHeadContent>
@@ -94,7 +101,7 @@ const InvoiceList = () => {
               <div className="card-inner">
                 <div className="card-title-group">
                   <div className="card-title">
-                    <h5 className="title">All Invoices</h5>
+                    <h5 className="title">All Convocations</h5>
                   </div>
                   <div className="card-tools me-n1">
                     <ul className="btn-toolbar">
@@ -205,12 +212,8 @@ const InvoiceList = () => {
                   <thead className="tb-odr-head">
                     <tr className="tb-odr-item">
                       <th className="tb-odr-info">
-                        <span className="tb-odr-id">Order ID</span>
+                        <span className="tb-odr-id">Convocation ID</span>
                         <span className="tb-odr-date d-none d-md-inline-block">Date</span>
-                      </th>
-                      <th className="tb-odr-amount">
-                        <span className="tb-odr-total">Amount</span>
-                        <span className="tb-odr-status d-none d-md-inline-block">Status</span>
                       </th>
                       <th className="tb-odr-action">&nbsp;</th>
                     </tr>
@@ -223,29 +226,10 @@ const InvoiceList = () => {
                               <td className="tb-odr-info">
                                 <span className="tb-odr-id">
                                   <Link to={`${process.env.PUBLIC_URL}/invoice-details/${item.id}`}>
-                                    #{item.orderId}
+                                    {item.orderId}
                                   </Link>
                                 </span>
                                 <span className="tb-odr-date">{item.date}</span>
-                              </td>
-                              <td className="tb-odr-amount">
-                                <span className="tb-odr-total">
-                                  <span className="amount">${item.totalAmount}</span>
-                                </span>
-                                <span className="tb-odr-status">
-                                  <Badge
-                                    color={
-                                      item.status === "Complete"
-                                        ? "success"
-                                        : item.status === "Pending"
-                                        ? "warning"
-                                        : "danger"
-                                    }
-                                    className="badge-dot"
-                                  >
-                                    {item.status}
-                                  </Badge>
-                                </span>
                               </td>
                               <td className="tb-odr-action">
                                 <div className="tb-odr-btns d-none d-sm-inline">

@@ -2,11 +2,10 @@ import React, { useState, useEffect, useContext } from "react";
 import Content from "../../../layout/content/Content";
 import Head from "../../../layout/head/Head";
 import { findUpper } from "../../../utils/Utils";
-import { userData, filterRole, filterStatus } from "./UserData";
+import { studentData, filterStatus } from "./StudentData";
 import {
   DropdownMenu,
   DropdownToggle,
-  
   UncontrolledDropdown,
   Modal,
   ModalBody,
@@ -21,7 +20,6 @@ import {
   BlockHeadContent,
   BlockTitle,
   Icon,
-  Row,
   Col,
   UserAvatar,
   PaginationComponent,
@@ -36,15 +34,14 @@ import {
 } from "../../../components/Component";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { UserContext } from "./UserContext";
+import { StudentContext } from "./StudentContext";
 import { bulkActionOptions } from "../../../utils/Utils";
 
-const UserListCompact = () => {
-  const { contextData } = useContext(UserContext);
+const StudentListCompact = () => {
+  const { contextData } = useContext(StudentContext);
   const [data, setData] = contextData;
 
   const [sm, updateSm] = useState(false);
-  const [tablesm, updateTableSm] = useState(false);
   const [onSearch, setonSearch] = useState(true);
   const [onSearchText, setSearchText] = useState("");
   const [modal, setModal] = useState({
@@ -61,25 +58,14 @@ const UserListCompact = () => {
   });
   const [actionText, setActionText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemPerPage, setItemPerPage] = useState(10);
-  const [sort, setSortState] = useState("");
+  const [itemPerPage] = useState(10);
 
-  // Sorting data
-  const sortFunc = (params) => {
-    let defaultData = data;
-    if (params === "asc") {
-      let sortedData = defaultData.sort((a, b) => a.name.localeCompare(b.name));
-      setData([...sortedData]);
-    } else if (params === "dsc") {
-      let sortedData = defaultData.sort((a, b) => b.name.localeCompare(a.name));
-      setData([...sortedData]);
-    }
-  };
+  
 
   // unselects the data on mount
   useEffect(() => {
     let newData;
-    newData = userData.map((item) => {
+    newData = studentData.map((item) => {
       item.checked = false;
       return item;
     });
@@ -89,7 +75,7 @@ const UserListCompact = () => {
   // Changing state value when searching name
   useEffect(() => {
     if (onSearchText !== "") {
-      const filteredObject = userData.filter((item) => {
+      const filteredObject = studentData.filter((item) => {
         return (
           item.name.toLowerCase().includes(onSearchText.toLowerCase()) ||
           item.email.toLowerCase().includes(onSearchText.toLowerCase())
@@ -97,7 +83,7 @@ const UserListCompact = () => {
       });
       setData([...filteredObject]);
     } else {
-      setData([...userData]);
+      setData([...studentData]);
     }
   }, [onSearchText, setData]);
 
@@ -205,7 +191,7 @@ const UserListCompact = () => {
   };
 
   // function to change to suspend property for an item
-  const suspendUser = (id) => {
+  const suspendStudent = (id) => {
     let newData = data;
     let index = newData.findIndex((item) => item.id === id);
     newData[index].status = "Suspend";
@@ -252,16 +238,16 @@ const UserListCompact = () => {
 
   return (
     <React.Fragment>
-      <Head title="User List - Compact"></Head>
+      <Head title="Student List - Compact"></Head>
       <Content>
         <BlockHead size="sm">
           <BlockBetween>
             <BlockHeadContent>
               <BlockTitle tag="h3" page>
-                Users Lists
+                Students Lists
               </BlockTitle>
               <BlockDes className="text-soft">
-                <p>You have total 2,595 users.</p>
+                <p>You have total 2,595 students.</p>
               </BlockDes>
             </BlockHeadContent>
             <BlockHeadContent>
@@ -283,7 +269,7 @@ const UserListCompact = () => {
                         className="btn btn-white btn-outline-light"
                       >
                         <Icon name="download-cloud"></Icon>
-                        <span>Export</span>
+                        <span>Import</span>
                       </a>
                     </li>
                     <li className="nk-block-tools-opt">
@@ -352,189 +338,7 @@ const UserListCompact = () => {
                         <Icon name="search"></Icon>
                       </a>
                     </li>
-                    <li className="btn-toolbar-sep"></li>
-                    <li>
-                      <div className="toggle-wrap">
-                        <Button
-                          className={`btn-icon btn-trigger toggle ${tablesm ? "active" : ""}`}
-                          onClick={() => updateTableSm(true)}
-                        >
-                          <Icon name="menu-right"></Icon>
-                        </Button>
-                        <div className={`toggle-content ${tablesm ? "content-active" : ""}`}>
-                          <ul className="btn-toolbar gx-1">
-                            <li className="toggle-close">
-                              <Button className="btn-icon btn-trigger toggle" onClick={() => updateTableSm(false)}>
-                                <Icon name="arrow-left"></Icon>
-                              </Button>
-                            </li>
-                            <li>
-                              <UncontrolledDropdown>
-                                <DropdownToggle tag="a" className="btn btn-trigger btn-icon dropdown-toggle">
-                                  <div className="dot dot-primary"></div>
-                                  <Icon name="filter-alt"></Icon>
-                                </DropdownToggle>
-                                <DropdownMenu
-                                  end
-                                  className="filter-wg dropdown-menu-xl"
-                                  style={{ overflow: "visible" }}
-                                >
-                                  <div className="dropdown-head">
-                                    <span className="sub-title dropdown-title">Filter Users</span>
-                                    <div className="dropdown">
-                                      <DropdownItem
-                                        href="#more"
-                                        onClick={(ev) => {
-                                          ev.preventDefault();
-                                        }}
-                                        className="btn btn-sm btn-icon"
-                                      >
-                                        <Icon name="more-h"></Icon>
-                                      </DropdownItem>
-                                    </div>
-                                  </div>
-                                  <div className="dropdown-body dropdown-body-rg">
-                                    <Row className="gx-6 gy-3">
-                                      <Col size="6">
-                                        <div className="custom-control custom-control-sm custom-checkbox">
-                                          <input
-                                            type="checkbox"
-                                            className="custom-control-input"
-                                            id="hasBalance"
-                                          />
-                                          <label className="custom-control-label" htmlFor="hasBalance">
-                                            {" "}
-                                            Have Balance
-                                          </label>
-                                        </div>
-                                      </Col>
-                                      <Col size="6">
-                                        <div className="custom-control custom-control-sm custom-checkbox">
-                                          <input
-                                            type="checkbox"
-                                            className="custom-control-input"
-                                            id="hasKYC"
-                                          />
-                                          <label className="custom-control-label" htmlFor="hasKYC">
-                                            {" "}
-                                            KYC Verified
-                                          </label>
-                                        </div>
-                                      </Col>
-                                      <Col size="6">
-                                        <div className="form-group">
-                                          <label className="overline-title overline-title-alt">Role</label>
-                                          <RSelect options={filterRole} placeholder="Any Role" />
-                                        </div>
-                                      </Col>
-                                      <Col size="6">
-                                        <div className="form-group">
-                                          <label className="overline-title overline-title-alt">Status</label>
-                                          <RSelect options={filterStatus} placeholder="Any Status" />
-                                        </div>
-                                      </Col>
-                                      <Col size="12">
-                                        <div className="form-group">
-                                          <Button color="secondary">Filter</Button>
-                                        </div>
-                                      </Col>
-                                    </Row>
-                                  </div>
-                                  <div className="dropdown-foot between">
-                                    <a
-                                      href="#reset"
-                                      onClick={(ev) => {
-                                        ev.preventDefault();
-                                      }}
-                                      className="clickable"
-                                    >
-                                      Reset Filter
-                                    </a>
-                                    <a
-                                      href="#save"
-                                      onClick={(ev) => {
-                                        ev.preventDefault();
-                                      }}
-                                    >
-                                      Save Filter
-                                    </a>
-                                  </div>
-                                </DropdownMenu>
-                              </UncontrolledDropdown>
-                            </li>
-                            <li>
-                              <UncontrolledDropdown>
-                                <DropdownToggle tag="a" className="btn btn-trigger btn-icon dropdown-toggle">
-                                  <Icon name="setting"></Icon>
-                                </DropdownToggle>
-                                <DropdownMenu end className="dropdown-menu-xs">
-                                  <ul className="link-check">
-                                    <li>
-                                      <span>Show</span>
-                                    </li>
-                                    <li className={itemPerPage === 10 ? "active" : ""}>
-                                      <DropdownItem
-                                        tag="a"
-                                        href="#dropdownitem"
-                                        onClick={(ev) => {
-                                          ev.preventDefault();
-                                          setItemPerPage(10);
-                                        }}
-                                      >
-                                        10
-                                      </DropdownItem>
-                                    </li>
-                                    <li className={itemPerPage === 15 ? "active" : ""}>
-                                      <DropdownItem
-                                        tag="a"
-                                        href="#dropdownitem"
-                                        onClick={(ev) => {
-                                          ev.preventDefault();
-                                          setItemPerPage(15);
-                                        }}
-                                      >
-                                        15
-                                      </DropdownItem>
-                                    </li>
-                                  </ul>
-                                  <ul className="link-check">
-                                    <li>
-                                      <span>Order</span>
-                                    </li>
-                                    <li className={sort === "dsc" ? "active" : ""}>
-                                      <DropdownItem
-                                        tag="a"
-                                        href="#dropdownitem"
-                                        onClick={(ev) => {
-                                          ev.preventDefault();
-                                          setSortState("dsc");
-                                          sortFunc("dsc");
-                                        }}
-                                      >
-                                        DESC
-                                      </DropdownItem>
-                                    </li>
-                                    <li className={sort === "asc" ? "active" : ""}>
-                                      <DropdownItem
-                                        tag="a"
-                                        href="#dropdownitem"
-                                        onClick={(ev) => {
-                                          ev.preventDefault();
-                                          setSortState("asc");
-                                          sortFunc("asc");
-                                        }}
-                                      >
-                                        ASC
-                                      </DropdownItem>
-                                    </li>
-                                  </ul>
-                                </DropdownMenu>
-                              </UncontrolledDropdown>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </li>
+                    
                   </ul>
                 </div>
               </div>
@@ -553,7 +357,7 @@ const UserListCompact = () => {
                     <input
                       type="text"
                       className="border-transparent form-focus-none form-control"
-                      placeholder="Search by user or email"
+                      placeholder="Search by student or email"
                       value={onSearchText}
                       onChange={(e) => onFilterChange(e)}
                     />
@@ -578,7 +382,7 @@ const UserListCompact = () => {
                   </div>
                 </DataTableRow>
                 <DataTableRow>
-                  <span className="sub-text">User</span>
+                  <span className="sub-text">Student</span>
                 </DataTableRow>
                 <DataTableRow size="md">
                   <span className="sub-text">Role</span>
@@ -664,15 +468,15 @@ const UserListCompact = () => {
                           </div>
                         </DataTableRow>
                         <DataTableRow>
-                          <Link to={`${process.env.PUBLIC_URL}/user-details-regular/${item.id}`}>
-                            <div className="user-card">
+                          <Link to={`${process.env.PUBLIC_URL}/student-details-regular/${item.id}`}>
+                            <div className="student-card">
                               <UserAvatar
                                 theme={item.avatarBg}
                                 className="xs"
                                 text={findUpper(item.name)}
                                 image={item.image}
                               ></UserAvatar>
-                              <div className="user-name">
+                              <div className="student-name">
                                 <span className="tb-lead">{item.name}</span>
                               </div>
                             </div>
@@ -739,12 +543,12 @@ const UserListCompact = () => {
                             </li>
                             {item.status !== "Suspend" && (
                               <React.Fragment>
-                                <li className="nk-tb-action-hidden" onClick={() => suspendUser(item.id)}>
+                                <li className="nk-tb-action-hidden" onClick={() => suspendStudent(item.id)}>
                                   <TooltipComponent
                                     tag="a"
                                     containerClassName="btn btn-trigger btn-icon"
                                     id={"suspend" + item.id}
-                                    icon="user-cross-fill"
+                                    icon="student-cross-fill"
                                     direction="top"
                                     text="Suspend"
                                   />
@@ -773,7 +577,7 @@ const UserListCompact = () => {
                                     {item.status !== "Suspend" && (
                                       <React.Fragment>
                                         <li className="divider"></li>
-                                        <li onClick={() => suspendUser(item.id)}>
+                                        <li onClick={() => suspendStudent(item.id)}>
                                           <DropdownItem
                                             tag="a"
                                             href="#suspend"
@@ -782,7 +586,7 @@ const UserListCompact = () => {
                                             }}
                                           >
                                             <Icon name="na"></Icon>
-                                            <span>Suspend User</span>
+                                            <span>Suspend Student</span>
                                           </DropdownItem>
                                         </li>
                                       </React.Fragment>
@@ -827,7 +631,7 @@ const UserListCompact = () => {
               <Icon name="cross-sm"></Icon>
             </a>
             <div className="p-2">
-              <h5 className="title">Add User</h5>
+              <h5 className="title">Add Student</h5>
               <div className="mt-4">
                 <Form className="row gy-4" onSubmit={handleSubmit(onFormSubmit)}>
                   <Col md="6">
@@ -840,12 +644,7 @@ const UserListCompact = () => {
                   <Col md="6">
                     <div className="form-group">
                       <label className="form-label">Email </label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        name="email"
-                        defaultValue={formData.email}
-                        placeholder="Enter email"
+                      <input className="form-control" type="text" name="email" defaultValue={formData.email} placeholder="Enter email"
                         ref={register({
                           required: "This field is required",
                           pattern: {
@@ -902,7 +701,7 @@ const UserListCompact = () => {
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
                         <Button color="primary" size="md" type="submit">
-                          Add User
+                          Add Student
                         </Button>
                       </li>
                       <li>
@@ -937,7 +736,7 @@ const UserListCompact = () => {
               <Icon name="cross-sm"></Icon>
             </a>
             <div className="p-2">
-              <h5 className="title">Update User</h5>
+              <h5 className="title">Update Student</h5>
               <div className="mt-4">
                 <Form className="row gy-4" onSubmit={handleSubmit(onEditSubmit)}>
                   <Col md="6">
@@ -1021,7 +820,7 @@ const UserListCompact = () => {
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
                         <Button color="primary" size="md" type="submit">
-                          Update User
+                          Update Student
                         </Button>
                       </li>
                       <li>
@@ -1047,4 +846,4 @@ const UserListCompact = () => {
     </React.Fragment>
   );
 };
-export default UserListCompact;
+export default StudentListCompact;

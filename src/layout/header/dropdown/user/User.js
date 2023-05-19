@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DropdownToggle, DropdownMenu, Dropdown } from "reactstrap";
 import { Icon } from "../../../../components/Component";
 import { LinkList, LinkItem } from "../../../../components/links/Links";
@@ -7,7 +7,12 @@ import UserAvatar from "../../../../components/user/UserAvatar";
 const User = () => {
   const [open, setOpen] = useState(false);
   const toggle = () => setOpen((prevState) => !prevState);
+  const [currentUser, setCurentUser] = useState()
 
+  useEffect(()=>{
+    const user = localStorage.getItem("currentUser")
+    setCurentUser(JSON.parse(user))
+  }, [])
   const handleSignout = () => {
     localStorage.removeItem("accessToken");
   };
@@ -25,8 +30,8 @@ const User = () => {
         <div className="user-toggle">
           <UserAvatar icon="user-alt" className="sm" />
           <div className="user-info d-none d-md-block">
-            <div className="user-status">Administrator</div>
-            <div className="user-name dropdown-indicator">Aymane Ait El Bhiri</div>
+            <div className="user-status">Student</div>
+            <div className="user-name dropdown-indicator">{currentUser?.name}</div>
           </div>
         </div>
       </DropdownToggle>
@@ -37,8 +42,8 @@ const User = () => {
               <span>AB</span>
             </div>
             <div className="user-info">
-              <span className="lead-text">Aymane Ait El Bhiri</span>
-              <span className="sub-text">info@softnio.com</span>
+              <span className="lead-text">{currentUser?.name}</span>
+              <span className="sub-text">{currentUser?.email}</span>
             </div>
           </div>
         </div>
@@ -46,7 +51,8 @@ const User = () => {
           <LinkList>
             <LinkItem link="/user-profile-regular" icon="user-alt" onClick={toggle}>
               View Profile
-            </LinkItem>   
+            </LinkItem>
+            
           </LinkList>
         </div>
         <div className="dropdown-inner">
