@@ -384,24 +384,18 @@ const StudentListCompact = () => {
                 <DataTableRow>
                   <span className="sub-text">Student</span>
                 </DataTableRow>
-                <DataTableRow size="md">
-                  <span className="sub-text">Role</span>
-                </DataTableRow>
+            
                 <DataTableRow size="sm">
                   <span className="sub-text">Email</span>
                 </DataTableRow>
                 <DataTableRow size="md">
                   <span className="sub-text">Phone</span>
                 </DataTableRow>
-                <DataTableRow size="lg">
-                  <span className="sub-text">Company</span>
-                </DataTableRow>
+                
                 <DataTableRow size="lg">
                   <span className="sub-text">Verified</span>
                 </DataTableRow>
-                <DataTableRow size="lg">
-                  <span className="sub-text">Last Login</span>
-                </DataTableRow>
+               
                 <DataTableRow>
                   <span className="sub-text">Status</span>
                 </DataTableRow>
@@ -482,18 +476,14 @@ const StudentListCompact = () => {
                             </div>
                           </Link>
                         </DataTableRow>
-                        <DataTableRow size="md">
-                          <span>{item.role}</span>
-                        </DataTableRow>
+                        
                         <DataTableRow size="sm">
                           <span>{item.email}</span>
                         </DataTableRow>
                         <DataTableRow size="md">
                           <span>{item.phone}</span>
                         </DataTableRow>
-                        <DataTableRow size="lg">
-                          <span>{item.country}</span>
-                        </DataTableRow>
+                        
                         <DataTableRow size="lg">
                           <ul className="list-status">
                             <li>
@@ -517,9 +507,7 @@ const StudentListCompact = () => {
                             </li>
                           </ul>
                         </DataTableRow>
-                        <DataTableRow size="lg">
-                          <span>{item.lastLogin}</span>
-                        </DataTableRow>
+                       
                         <DataTableRow>
                           <span
                             className={`tb-status text-${
