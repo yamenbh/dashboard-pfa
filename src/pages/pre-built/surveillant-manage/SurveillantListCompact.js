@@ -2,34 +2,84 @@ import React, { useState, useEffect, useContext } from "react";
 import Content from "../../../layout/content/Content";
 import Head from "../../../layout/head/Head";
 import { findUpper } from "../../../utils/Utils";
-import { userData, filterRole, filterStatus } from "./UserData";
-import { DropdownMenu,DropdownToggle,UncontrolledDropdown,Modal,ModalBody,DropdownItem,Form,} from "reactstrap";
-import {Block,BlockBetween,BlockDes,BlockHead,BlockHeadContent,BlockTitle,Icon,Row,Col,UserAvatar,PaginationComponent,DataTable,DataTableBody,DataTableHead,DataTableRow, DataTableItem, Button,RSelect,TooltipComponent,
+import { surveillantData, filterRole, filterStatus } from "./SurveillantData";
+import {
+  DropdownMenu,
+  DropdownToggle,
+  
+  UncontrolledDropdown,
+  Modal,
+  ModalBody,
+  DropdownItem,
+  Form,
+} from "reactstrap";
+import {
+  Block,
+  BlockBetween,
+  BlockDes,
+  BlockHead,
+  BlockHeadContent,
+  BlockTitle,
+  Icon,
+  Row,
+  Col,
+  UserAvatar,
+  PaginationComponent,
+  DataTable,
+  DataTableBody,
+  DataTableHead,
+  DataTableRow,
+  DataTableItem,
+  Button,
+  RSelect,
+  TooltipComponent,
 } from "../../../components/Component";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { UserContext } from "./UserContext";
+import { SurveillantContext } from "./SurveillantContext";
 import { bulkActionOptions } from "../../../utils/Utils";
 
-const UserListCompact = () => {
-  const { contextData } = useContext(UserContext);
+const SurveillantListCompact = () => {
+  const { contextData } = useContext(SurveillantContext);
   const [data, setData] = contextData;
 
   const [sm, updateSm] = useState(false);
   const [tablesm, updateTableSm] = useState(false);
   const [onSearch, setonSearch] = useState(true);
   const [onSearchText, setSearchText] = useState("");
-  const [modal, setModal] = useState({edit: false,add: false, });
+  const [modal, setModal] = useState({
+    edit: false,
+    add: false,
+  });
   const [editId, setEditedId] = useState();
-  const [formData, setFormData] = useState({name: "",email: "",specialite: "",phone: "",status: "Active",});
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    specialite: "",
+    phone: "",
+    status: "Active",
+  });
   const [actionText, setActionText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemPerPage] = useState(10);
+  const [itemPerPage, setItemPerPage] = useState(10);
+  const [sort, setSortState] = useState("");
+
+  // Sorting data
+  const sortFunc = (params) => {
+    let defaultData = data;
+    if (params === "asc") {
+      let sortedData = defaultData.sort((a, b) => a.name.localeCompare(b.name));
+      setData([...sortedData]);
+    } else if (params === "dsc") {
+      let sortedData = defaultData.sort((a, b) => b.name.localeCompare(a.name));
+      setData([...sortedData]);
+    }
+  };
 
   // unselects the data on mount
   useEffect(() => {
     let newData;
-    newData = userData.map((item) => {
+    newData = surveillantData.map((item) => {
       item.checked = false;
       return item;
     });
@@ -39,7 +89,7 @@ const UserListCompact = () => {
   // Changing state value when searching name
   useEffect(() => {
     if (onSearchText !== "") {
-      const filteredObject = userData.filter((item) => {
+      const filteredObject = surveillantData.filter((item) => {
         return (
           item.name.toLowerCase().includes(onSearchText.toLowerCase()) ||
           item.email.toLowerCase().includes(onSearchText.toLowerCase())
@@ -47,7 +97,7 @@ const UserListCompact = () => {
       });
       setData([...filteredObject]);
     } else {
-      setData([...userData]);
+      setData([...surveillantData]);
     }
   }, [onSearchText, setData]);
 
@@ -71,7 +121,13 @@ const UserListCompact = () => {
 
   // function to reset the form
   const resetForm = () => {
-    setFormData({name: "",email: "",specialite: "",phone: "",status: "Active",});
+    setFormData({
+      name: "",
+      email: "",
+      specialite: "",
+      phone: "",
+      status: "Active",
+    });
   };
 
   // function to close the form modal
@@ -93,7 +149,7 @@ const UserListCompact = () => {
       phone: phone,
       emailStatus: "success",
       kycStatus: "alert",
-      
+      specialite: "10 Feb 2020",
       status: formData.status,
       country: "Bangladesh",
     };
@@ -149,7 +205,7 @@ const UserListCompact = () => {
   };
 
   // function to change to suspend property for an item
-  const suspendUser = (id) => {
+  const suspendSurveillant = (id) => {
     let newData = data;
     let index = newData.findIndex((item) => item.id === id);
     newData[index].status = "Suspend";
@@ -196,27 +252,31 @@ const UserListCompact = () => {
 
   return (
     <React.Fragment>
-      <Head title="Professeurs - Compact"></Head>
+      <Head title="Surveillants - Compact"></Head>
       <Content>
         <BlockHead size="sm">
           <BlockBetween>
             <BlockHeadContent>
               <BlockTitle tag="h3" page>
-                Professeurs Listes
+                Surveillants Listes
               </BlockTitle>
               <BlockDes className="text-soft">
-                <p>You have total 2,595 professeurs.</p>
+                <p>You have total 2,595 surveillants.</p>
               </BlockDes>
             </BlockHeadContent>
             <BlockHeadContent>
               <div className="toggle-wrap nk-block-tools-toggle">
-                <Button className={`btn-icon btn-trigger toggle-expand me-n1 ${sm ? "active" : ""}`} onClick={() => updateSm(!sm)}>
+                <Button
+                  className={`btn-icon btn-trigger toggle-expand me-n1 ${sm ? "active" : ""}`}
+                  onClick={() => updateSm(!sm)}
+                >
                   <Icon name="menu-alt-r"></Icon>
                 </Button>
                 <div className="toggle-expand-content" style={{ display: sm ? "block" : "none" }}>
                   <ul className="nk-block-tools g-3">
                     <li>
-                      <a href="#export"
+                      <a
+                        href="#export"
                         onClick={(ev) => {
                           ev.preventDefault();
                         }}
@@ -330,7 +390,7 @@ const UserListCompact = () => {
                     <input
                       type="text"
                       className="border-transparent form-focus-none form-control"
-                      placeholder="Search by user or email"
+                      placeholder="Search by surveillant or email"
                       value={onSearchText}
                       onChange={(e) => onFilterChange(e)}
                     />
@@ -355,7 +415,7 @@ const UserListCompact = () => {
                   </div>
                 </DataTableRow>
                 <DataTableRow>
-                  <span className="sub-text">User</span>
+                  <span className="sub-text">Surveillant</span>
                 </DataTableRow>
                 <DataTableRow size="md">
                   <span className="sub-text">Email</span>
@@ -432,15 +492,15 @@ const UserListCompact = () => {
                           </div>
                         </DataTableRow>
                         <DataTableRow>
-                          <Link to={`${process.env.PUBLIC_URL}/user-details-regular/${item.id}`}>
-                            <div className="user-card">
+                          <Link to={`${process.env.PUBLIC_URL}/surveillant-details-regular/${item.id}`}>
+                            <div className="surveillant-card">
                               <UserAvatar
                                 theme={item.avatarBg}
                                 className="xs"
                                 text={findUpper(item.name)}
                                 image={item.image}
                               ></UserAvatar>
-                              <div className="user-name">
+                              <div className="surveillant-name">
                                 <span className="tb-lead">{item.name}</span>
                               </div>
                             </div>
@@ -480,12 +540,12 @@ const UserListCompact = () => {
                             </li>
                             {item.status !== "Suspend" && (
                               <React.Fragment>
-                                <li className="nk-tb-action-hidden" onClick={() => suspendUser(item.id)}>
+                                <li className="nk-tb-action-hidden" onClick={() => suspendSurveillant(item.id)}>
                                   <TooltipComponent
                                     tag="a"
                                     containerClassName="btn btn-trigger btn-icon"
                                     id={"suspend" + item.id}
-                                    icon="user-cross-fill"
+                                    icon="surveillant-cross-fill"
                                     direction="top"
                                     text="Suspend"
                                   />
@@ -514,7 +574,7 @@ const UserListCompact = () => {
                                     {item.status !== "Suspend" && (
                                       <React.Fragment>
                                         <li className="divider"></li>
-                                        <li onClick={() => suspendUser(item.id)}>
+                                        <li onClick={() => suspendSurveillant(item.id)}>
                                           <DropdownItem
                                             tag="a"
                                             href="#suspend"
@@ -523,7 +583,7 @@ const UserListCompact = () => {
                                             }}
                                           >
                                             <Icon name="na"></Icon>
-                                            <span>Suspend User</span>
+                                            <span>Suspend Surveillant</span>
                                           </DropdownItem>
                                         </li>
                                       </React.Fragment>
@@ -568,7 +628,7 @@ const UserListCompact = () => {
               <Icon name="cross-sm"></Icon>
             </a>
             <div className="p-2">
-              <h5 className="title">Add Professeur</h5>
+              <h5 className="title">Add Surveillant</h5>
               <div className="mt-4">
                 <Form className="row gy-4" onSubmit={handleSubmit(onFormSubmit)}>
                   <Col md="6">
@@ -643,7 +703,7 @@ const UserListCompact = () => {
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
                         <Button color="primary" size="md" type="submit">
-                          Add User
+                          Add Surveillant
                         </Button>
                       </li>
                       <li>
@@ -678,7 +738,7 @@ const UserListCompact = () => {
               <Icon name="cross-sm"></Icon>
             </a>
             <div className="p-2">
-              <h5 className="title">Update Professeur</h5>
+              <h5 className="title">Update Surveillant</h5>
               <div className="mt-4">
                 <Form className="row gy-4" onSubmit={handleSubmit(onEditSubmit)}>
                   <Col md="6">
@@ -762,7 +822,7 @@ const UserListCompact = () => {
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
                         <Button color="primary" size="md" type="submit">
-                          Update User
+                          Update Surveillant
                         </Button>
                       </li>
                       <li>
@@ -788,4 +848,4 @@ const UserListCompact = () => {
     </React.Fragment>
   );
 };
-export default UserListCompact;
+export default SurveillantListCompact;

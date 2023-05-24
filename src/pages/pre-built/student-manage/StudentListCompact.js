@@ -2,10 +2,11 @@ import React, { useState, useEffect, useContext } from "react";
 import Content from "../../../layout/content/Content";
 import Head from "../../../layout/head/Head";
 import { findUpper } from "../../../utils/Utils";
-import { studentData, filterStatus } from "./StudentData";
+import { studentData, filterRole, filterStatus } from "./StudentData";
 import {
   DropdownMenu,
   DropdownToggle,
+  
   UncontrolledDropdown,
   Modal,
   ModalBody,
@@ -20,6 +21,7 @@ import {
   BlockHeadContent,
   BlockTitle,
   Icon,
+  Row,
   Col,
   UserAvatar,
   PaginationComponent,
@@ -42,6 +44,7 @@ const StudentListCompact = () => {
   const [data, setData] = contextData;
 
   const [sm, updateSm] = useState(false);
+  const [tablesm, updateTableSm] = useState(false);
   const [onSearch, setonSearch] = useState(true);
   const [onSearchText, setSearchText] = useState("");
   const [modal, setModal] = useState({
@@ -52,15 +55,29 @@ const StudentListCompact = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    balance: "",
+    specialite: "",
     phone: "",
+    filier: "",
+    niveau: "",
+    groupe: "",
     status: "Active",
   });
   const [actionText, setActionText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemPerPage] = useState(10);
+  const [itemPerPage, setItemPerPage] = useState(10);
+  const [sort, setSortState] = useState("");
 
-  
+  // Sorting data
+  const sortFunc = (params) => {
+    let defaultData = data;
+    if (params === "asc") {
+      let sortedData = defaultData.sort((a, b) => a.name.localeCompare(b.name));
+      setData([...sortedData]);
+    } else if (params === "dsc") {
+      let sortedData = defaultData.sort((a, b) => b.name.localeCompare(a.name));
+      setData([...sortedData]);
+    }
+  };
 
   // unselects the data on mount
   useEffect(() => {
@@ -110,8 +127,11 @@ const StudentListCompact = () => {
     setFormData({
       name: "",
       email: "",
-      balance: "",
+      specialite: "",
       phone: "",
+      filier: "",
+      niveau: "",
+      groupe: "",
       status: "Active",
     });
   };
@@ -124,18 +144,21 @@ const StudentListCompact = () => {
 
   // submit function to add a new item
   const onFormSubmit = (submitData) => {
-    const { name, email, balance, phone } = submitData;
+    const { name, email, specialite, phone , filier , niveau , groupe} = submitData;
     let submittedData = {
       id: data.length + 1,
       avatarBg: "purple",
       name: name,
       role: "Customer",
       email: email,
-      balance: balance,
+      specialite: specialite,
       phone: phone,
+      filier: filier,
+      niveau: niveau,
+      groupe: groupe,
       emailStatus: "success",
       kycStatus: "alert",
-      lastLogin: "10 Feb 2020",
+      specialite: "10 Feb 2020",
       status: formData.status,
       country: "Bangladesh",
     };
@@ -146,7 +169,7 @@ const StudentListCompact = () => {
 
   // submit function to update a new item
   const onEditSubmit = (submitData) => {
-    const { name, email, phone } = submitData;
+    const { name, email, phone, filier, niveau, groupe } = submitData;
     let submittedData;
     let newitems = data;
     newitems.forEach((item) => {
@@ -158,11 +181,14 @@ const StudentListCompact = () => {
           image: item.image,
           role: item.role,
           email: email,
-          balance: formData.balance,
+          specialite: formData.specialite,
           phone: "+" + phone,
+          filier: item.filier,
+          niveau: item.niveau,
+          groupe: item.groupe,
           emailStatus: item.emailStatus,
           kycStatus: item.kycStatus,
-          lastLogin: item.lastLogin,
+          specialite: item.specialite,
           status: formData.status,
           country: item.country,
         };
@@ -182,7 +208,10 @@ const StudentListCompact = () => {
           email: item.email,
           status: item.status,
           phone: item.phone,
-          balance: item.balance,
+          filier: item.filier,
+          niveau: item.niveau,
+          groupe: item.groupe,
+          specialite: item.specialite,
         });
         setModal({ edit: true }, { add: false });
         setEditedId(id);
@@ -238,16 +267,16 @@ const StudentListCompact = () => {
 
   return (
     <React.Fragment>
-      <Head title="Student List - Compact"></Head>
+      <Head title="Etudiants - Compact"></Head>
       <Content>
         <BlockHead size="sm">
           <BlockBetween>
             <BlockHeadContent>
               <BlockTitle tag="h3" page>
-                Students Lists
+                Etudiants Listes
               </BlockTitle>
               <BlockDes className="text-soft">
-                <p>You have total 2,595 students.</p>
+                <p>You have total 2,595 etudiants.</p>
               </BlockDes>
             </BlockHeadContent>
             <BlockHeadContent>
@@ -338,7 +367,26 @@ const StudentListCompact = () => {
                         <Icon name="search"></Icon>
                       </a>
                     </li>
-                    
+                    <li className="btn-toolbar-sep"></li>
+                    <li>
+                      <div className="toggle-wrap">
+                        <Button
+                          className={`btn-icon btn-trigger toggle ${tablesm ? "active" : ""}`}
+                          onClick={() => updateTableSm(true)}
+                        >
+                          <Icon name="menu-right"></Icon>
+                        </Button>
+                        <div className={`toggle-content ${tablesm ? "content-active" : ""}`}>
+                          <ul className="btn-toolbar gx-1">
+                            <li className="toggle-close">
+                              <Button className="btn-icon btn-trigger toggle" onClick={() => updateTableSm(false)}>
+                                <Icon name="arrow-left"></Icon>
+                              </Button>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -384,18 +432,24 @@ const StudentListCompact = () => {
                 <DataTableRow>
                   <span className="sub-text">Student</span>
                 </DataTableRow>
-            
-                <DataTableRow size="sm">
+                <DataTableRow size="md">
                   <span className="sub-text">Email</span>
                 </DataTableRow>
-                <DataTableRow size="md">
-                  <span className="sub-text">Phone</span>
+                <DataTableRow size="sm">
+                  <span className="sub-text">Telephone</span>
                 </DataTableRow>
-                
                 <DataTableRow size="lg">
-                  <span className="sub-text">Verified</span>
+                  <span className="sub-text">Specialité</span>
                 </DataTableRow>
-               
+                <DataTableRow size="sm">
+                  <span className="sub-text">filier</span>
+                </DataTableRow>
+                <DataTableRow size="sm">
+                  <span className="sub-text">niveau</span>
+                </DataTableRow>
+                <DataTableRow size="sm">
+                  <span className="sub-text">groupe</span>
+                </DataTableRow>
                 <DataTableRow>
                   <span className="sub-text">Status</span>
                 </DataTableRow>
@@ -410,7 +464,7 @@ const StudentListCompact = () => {
                           <div className="custom-control custom-control-sm custom-checkbox">
                             <input type="checkbox" className="custom-control-input" id="bl" />
                             <label className="custom-control-label" htmlFor="bl">
-                              Balance
+                              specialite
                             </label>
                           </div>
                         </li>
@@ -418,7 +472,7 @@ const StudentListCompact = () => {
                           <div className="custom-control custom-control-sm custom-checkbox">
                             <input type="checkbox" className="custom-control-input" id="ph" />
                             <label className="custom-control-label" htmlFor="ph">
-                              Phone
+                              Telephone
                             </label>
                           </div>
                         </li>
@@ -483,31 +537,19 @@ const StudentListCompact = () => {
                         <DataTableRow size="md">
                           <span>{item.phone}</span>
                         </DataTableRow>
-                        
-                        <DataTableRow size="lg">
-                          <ul className="list-status">
-                            <li>
-                              <Icon
-                                className={`text-${
-                                  item.emailStatus === "success"
-                                    ? "success"
-                                    : item.emailStatus === "pending"
-                                    ? "info"
-                                    : "secondary"
-                                }`}
-                                name={`${
-                                  item.emailStatus === "success"
-                                    ? "check-circle"
-                                    : item.emailStatus === "alert"
-                                    ? "alert-circle"
-                                    : "alarm-alt"
-                                }`}
-                              ></Icon>{" "}
-                              <span>Email</span>
-                            </li>
-                          </ul>
-                        </DataTableRow>
                        
+                        <DataTableRow size="lg">
+                          <span>{item.specialite}</span>
+                        </DataTableRow>
+                        <DataTableRow size="lg">
+                          <span>{item.filier}</span>
+                        </DataTableRow>
+                        <DataTableRow size="lg">
+                          <span>{item.niveau}</span>
+                        </DataTableRow>
+                        <DataTableRow size="lg">
+                          <span>{item.groupe}</span>
+                        </DataTableRow>
                         <DataTableRow>
                           <span
                             className={`tb-status text-${
@@ -619,7 +661,7 @@ const StudentListCompact = () => {
               <Icon name="cross-sm"></Icon>
             </a>
             <div className="p-2">
-              <h5 className="title">Add Student</h5>
+              <h5 className="title">Add Etudiant</h5>
               <div className="mt-4">
                 <Form className="row gy-4" onSubmit={handleSubmit(onFormSubmit)}>
                   <Col md="6">
@@ -632,7 +674,12 @@ const StudentListCompact = () => {
                   <Col md="6">
                     <div className="form-group">
                       <label className="form-label">Email </label>
-                      <input className="form-control" type="text" name="email" defaultValue={formData.email} placeholder="Enter email"
+                      <input
+                        className="form-control"
+                        type="text"
+                        name="email"
+                        defaultValue={formData.email}
+                        placeholder="Enter email"
                         ref={register({
                           required: "This field is required",
                           pattern: {
@@ -646,21 +693,21 @@ const StudentListCompact = () => {
                   </Col>
                   <Col md="6">
                     <div className="form-group">
-                      <label className="form-label">Balance</label>
+                      <label className="form-label">Specialité</label>
                       <input
                         className="form-control"
-                        type="number"
-                        name="balance"
-                        defaultValue={formData.balance}
-                        placeholder="Balance"
+                        type="text"
+                        name="specialite"
+                        defaultValue={formData.specialite}
+                        placeholder="specialite"
                         ref={register({ required: "This field is required" })}
                       />
-                      {errors.balance && <span className="invalid">{errors.balance.message}</span>}
+                      {errors.specialite && <span className="invalid">{errors.specialite.message}</span>}
                     </div>
                   </Col>
                   <Col md="6">
                     <div className="form-group">
-                      <label className="form-label">Phone</label>
+                      <label className="form-label">Telephone</label>
                       <input
                         className="form-control"
                         type="number"
@@ -673,7 +720,52 @@ const StudentListCompact = () => {
                       {errors.phone && <span className="invalid">{errors.phone.message}</span>}
                     </div>
                   </Col>
-                  <Col md="12">
+                  <Col md="6">
+                    <div className="form-group">
+                      <label className="form-label">filier</label>
+                      <input
+                        className="form-control"
+                        type="text"
+                        name="filier"
+                        defaultValue={formData.filier}
+                        ref={register({
+                          required: "This field is required",
+                        })}
+                      />
+                      {errors.filier && <span className="invalid">{errors.filier.message}</span>}
+                    </div>
+                  </Col>
+                  <Col md="6">
+                    <div className="form-group">
+                      <label className="form-label">niveau</label>
+                      <input
+                        className="form-control"
+                        type="text"
+                        name="niveau"
+                        defaultValue={formData.niveau}
+                        ref={register({
+                          required: "This field is required",
+                        })}
+                      />
+                      {errors.niveau && <span className="invalid">{errors.niveau.message}</span>}
+                    </div>
+                  </Col>
+                  <Col md="6">
+                    <div className="form-group">
+                      <label className="form-label">Groupe</label>
+                      <input
+                        className="form-control"
+                        type="text"
+                        name="groupe"
+                        defaultValue={formData.groupe}
+                        ref={register({
+                          required: "This field is required",
+                        })}
+                      />
+                      {errors.groupe && <span className="invalid">{errors.groupe.message}</span>}
+                    </div>
+                  </Col>
+                  <Col md="6">
                     <div className="form-group">
                       <label className="form-label">Status</label>
                       <div className="form-control-wrap">
@@ -689,7 +781,7 @@ const StudentListCompact = () => {
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
                         <Button color="primary" size="md" type="submit">
-                          Add Student
+                          Add Etudiant
                         </Button>
                       </li>
                       <li>
@@ -724,7 +816,7 @@ const StudentListCompact = () => {
               <Icon name="cross-sm"></Icon>
             </a>
             <div className="p-2">
-              <h5 className="title">Update Student</h5>
+              <h5 className="title">Update Etudiant</h5>
               <div className="mt-4">
                 <Form className="row gy-4" onSubmit={handleSubmit(onEditSubmit)}>
                   <Col md="6">
@@ -763,22 +855,22 @@ const StudentListCompact = () => {
                   </Col>
                   <Col md="6">
                     <div className="form-group">
-                      <label className="form-label">Balance</label>
+                      <label className="form-label">Specialite</label>
                       <input
                         className="form-control"
                         type="number"
-                        name="balance"
+                        name="specialite"
                         disabled
-                        defaultValue={parseFloat(formData.balance.replace(/,/g, ""))}
-                        placeholder="Balance"
+                        defaultValue={parseFloat(formData.specialite.replace(/,/g, ""))}
+                        placeholder="specialite"
                         ref={register({ required: "This field is required" })}
                       />
-                      {errors.balance && <span className="invalid">{errors.balance.message}</span>}
+                      {errors.specialite && <span className="invalid">{errors.specialite.message}</span>}
                     </div>
                   </Col>
                   <Col md="6">
                     <div className="form-group">
-                      <label className="form-label">Phone</label>
+                      <label className="form-label">Telephone</label>
                       <input
                         className="form-control"
                         type="number"

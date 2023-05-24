@@ -1,6 +1,6 @@
 import React from "react";
 import { Card } from "reactstrap";
-
+import { Icon } from "../../Component";
 
 const DataCard = ({ title, amount, percentChange, up, chart: ChartComponent }) => {
   return (

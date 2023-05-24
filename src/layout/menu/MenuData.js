@@ -8,20 +8,26 @@ const menu = [
   
   {
     icon: "users",
-    text: "User Manage",
+    text: "Gestion Professeurs",
     active: false,
     link: "/user-list-compact",
   },
   {
     icon: "users",
-    text: "Student Manage",
+    text: "Gestion Etudiants",
     active: false,
     link: "/student-list-compact",
+  },
+  {
+    icon: "users",
+    text: "Gestion Surveillants",
+    active: false,
+    link: "/surveillant-list-compact",
   },
  
   {
     icon: "grid-alt-fill",
-    text: "Calendar",
+    text: "Calendrier",
     active: false,
     link: "/app-calender",
     

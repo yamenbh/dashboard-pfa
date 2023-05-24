@@ -1,7 +1,7 @@
 import React from "react";
 import { Switch, Route, withRouter } from "react-router-dom";
 import { RedirectAs404 } from "./utils/Utils";
-import PrivateRoute from "./route/PrivateRoute";
+
 
 import Layout from "./layout/Index";
 
