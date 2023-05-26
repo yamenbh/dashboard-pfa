@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
-import Content from "../../../layout/content/Content";
-import Head from "../../../layout/head/Head";
-import { findUpper } from "../../../utils/Utils";
+import Content from "../../layout/content/Content";
+import Head from "../../layout/head/Head";
+import { findUpper } from "../../utils/Utils";
 import { userData,  filterStatus } from "./UserData";
 import { DropdownMenu,DropdownToggle,UncontrolledDropdown,Modal,ModalBody,DropdownItem,Form,} from "reactstrap";
 import {Block,BlockBetween,BlockDes,BlockHead,BlockHeadContent,BlockTitle,Icon,Col,UserAvatar,PaginationComponent,DataTable,DataTableBody,DataTableHead,DataTableRow, DataTableItem, Button,RSelect,TooltipComponent,
-} from "../../../components/Component";
+} from "../../components/Component";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { UserContext } from "./UserContext";
-import { bulkActionOptions } from "../../../utils/Utils";
+import { bulkActionOptions } from "../../utils/Utils";
 
 const UserListCompact = () => {
   const { contextData } = useContext(UserContext);

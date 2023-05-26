@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Head from "../../../layout/head/Head";
+import Head from "../../layout/head/Head";
 import DatePicker from "react-datepicker";
 import { Modal, ModalBody } from "reactstrap";
 import {
@@ -13,14 +13,14 @@ import {
   Row,
   Col,
   Button,
-  
-} from "../../../components/Component";
-import { studentData } from "./StudentData";
-import { getDateStructured } from "../../../utils/Utils";
+  RSelect,
+} from "../../components/Component";
+import { countryOptions, professeurData } from "./ProfesseurData";
+import { getDateStructured } from "../../utils/Utils";
 
-const StudentProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
+const ProfesseurProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
   const [modalTab, setModalTab] = useState("1");
-  const [studentInfo, setStudentInfo] = useState(studentData[0]);
+  const [professeurInfo, setProfesseurInfo] = useState(professeurData[0]);
   const [formData, setFormData] = useState({
     name: "Abu Bin Ishtiak",
     displayName: "Ishtiak",
@@ -32,6 +32,13 @@ const StudentProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
     country: "Canada",
   });
   const [modal, setModal] = useState(false);
+  const [currentProfesseur, setCurentProfesseur] = useState()
+
+  useEffect(()=>{
+    const professeur = localStorage.getItem("currentProfesseur")
+    setCurentProfesseur(JSON.parse(professeur))
+    setFormData(JSON.parse(professeur))
+  }, [])
 
   useEffect(() => {
     setProfileName(formData.name);
@@ -45,13 +52,13 @@ const StudentProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
     let submitData = {
       ...formData,
     };
-    setStudentInfo(submitData);
+    setProfesseurInfo(submitData);
     setModal(false);
   };
 
   return (
     <React.Fragment>
-      <Head title="Student List - Profile"></Head>
+      <Head title="Professeur List - Profile"></Head>
       <BlockHead size="lg">
         <BlockBetween>
           <BlockHeadContent>
@@ -79,7 +86,7 @@ const StudentProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
           <div className="data-item" onClick={() => setModal(true)}>
             <div className="data-col">
               <span className="data-label">Full Name</span>
-              <span className="data-value">{studentInfo.name}</span>
+              <span className="data-value">{currentProfesseur?.name}</span>
             </div>
             <div className="data-col data-col-end">
               <span className="data-more">
@@ -90,7 +97,7 @@ const StudentProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
           <div className="data-item" onClick={() => setModal(true)}>
             <div className="data-col">
               <span className="data-label">Display Name</span>
-              <span className="data-value">{studentInfo.displayName}</span>
+              <span className="data-value">{currentProfesseur?.name}</span>
             </div>
             <div className="data-col data-col-end">
               <span className="data-more">
@@ -101,7 +108,7 @@ const StudentProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
           <div className="data-item">
             <div className="data-col">
               <span className="data-label">Email</span>
-              <span className="data-value">info@softnio.com</span>
+              <span className="data-value">{currentProfesseur?.email}</span>
             </div>
             <div className="data-col data-col-end">
               <span className="data-more disable">
@@ -112,7 +119,7 @@ const StudentProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
           <div className="data-item" onClick={() => setModal(true)}>
             <div className="data-col">
               <span className="data-label">Phone Number</span>
-              <span className="data-value text-soft">{studentInfo.phone}</span>
+              <span className="data-value text-soft">{currentProfesseur?.phone}</span>
             </div>
             <div className="data-col data-col-end">
               <span className="data-more">
@@ -122,8 +129,10 @@ const StudentProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
           </div>
           <div className="data-item" onClick={() => setModal(true)}>
             <div className="data-col">
-              <span className="data-label">Date of Birth</span>
-              <span className="data-value">{studentInfo.dob}</span>
+              <span className="data-label">Major</span>
+              <span className="data-value">
+                {currentProfesseur?.major}
+              </span>
             </div>
             <div className="data-col data-col-end">
               <span className="data-more">
@@ -131,9 +140,8 @@ const StudentProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
               </span>
             </div>
           </div>
-        
         </div>
-       
+        
       </Block>
 
       <Modal isOpen={modal} className="modal-dialog-centered" size="lg" toggle={() => setModal(false)}>
@@ -163,18 +171,6 @@ const StudentProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
                   Personal
                 </a>
               </li>
-              <li className="nav-item">
-                <a
-                  className={`nav-link ${modalTab === "2" && "active"}`}
-                  onClick={(ev) => {
-                    ev.preventDefault();
-                    setModalTab("2");
-                  }}
-                  href="#address"
-                >
-                  Address
-                </a>
-              </li>
             </ul>
             <div className="tab-content">
               <div className={`tab-pane ${modalTab === "1" ? "active" : ""}`} id="personal">
@@ -190,7 +186,7 @@ const StudentProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
                         className="form-control"
                         name="name"
                         onChange={(e) => onInputChange(e)}
-                        defaultValue={formData.name}
+                        defaultValue={formData?.name}
                         placeholder="Enter Full name"
                       />
                     </div>
@@ -198,7 +194,7 @@ const StudentProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
                   <Col md="6">
                     <div className="form-group">
                       <label className="form-label" htmlFor="display-name">
-                        Display Name
+                        Email
                       </label>
                       <input
                         type="text"
@@ -206,7 +202,7 @@ const StudentProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
                         className="form-control"
                         name="displayName"
                         onChange={(e) => onInputChange(e)}
-                        defaultValue={formData.displayName}
+                        defaultValue={formData?.email}
                         placeholder="Enter display name"
                       />
                     </div>
@@ -217,30 +213,40 @@ const StudentProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
                         Phone Number
                       </label>
                       <input
-                        type="number"
+                        type="text"
                         id="phone-no"
                         className="form-control"
                         name="phone"
                         onChange={(e) => onInputChange(e)}
-                        defaultValue={formData.phone}
+                        defaultValue={formData?.phone}
                         placeholder="Phone Number"
                       />
                     </div>
                   </Col>
                   <Col md="6">
                     <div className="form-group">
-                      <label className="form-label" htmlFor="birth-day">
-                        Date of Birth
+                      <label className="form-label" htmlFor="major">
+                        Major
                       </label>
-                      <DatePicker
-                        selected={new Date(formData.dob)}
+                      <input
+                        type="text"
+                        id="major-id"
                         className="form-control"
-                        onChange={(date) => setFormData({ ...formData, dob: getDateStructured(date) })}
-                        maxDate={new Date()}
+                        name="major"
+                        onChange={(e) => onInputChange(e)}
+                        defaultValue={formData?.major}
+                        placeholder="Major"
                       />
                     </div>
                   </Col>
-                
+                  <Col size="12">
+                    <div className="custom-control custom-switch">
+                      <input type="checkbox" className="custom-control-input" id="latest-sale" />
+                      <label className="custom-control-label" htmlFor="latest-sale">
+                        Use full name to display{" "}
+                      </label>
+                    </div>
+                  </Col>
                   <Col size="12">
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
@@ -271,7 +277,6 @@ const StudentProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
                   </Col>
                 </Row>
               </div>
-            
             </div>
           </div>
         </ModalBody>
@@ -279,4 +284,4 @@ const StudentProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
     </React.Fragment>
   );
 };
-export default StudentProfileRegularPage;
+export default ProfesseurProfileRegularPage;

@@ -1,6 +1,6 @@
-import User3 from "../../../images/avatar/a-sm.jpg";
+import User3 from "../../images/avatar/a-sm.jpg";
 
-export const professeurData = [
+export const surveillantData = [
   {
     id: 1,
     avatarBg: "purple",
@@ -9,7 +9,7 @@ export const professeurData = [
     dob: "10 Aug, 1980",
     role: "Customer",
     checked: false,
-    email: "info@softnio.com",
+    email: "aymane@gmail.com",
     balance: "35,040.34",
     phone: "0614255767",
     emailStatus: "success",
@@ -31,7 +31,7 @@ export const professeurData = [
     name: "MALAK EL BHIRI",
     dob: "10 Sept, 1990",
     role: "Investor",
-    email: "ashley@softnio.com",
+    email: "malak@gmail.com",
     balance: "580.00",
     checked: false,
     phone: "06142555767",

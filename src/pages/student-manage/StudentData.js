@@ -1,4 +1,4 @@
-import User3 from "../../../images/avatar/a-sm.jpg";
+import User3 from "../../images/avatar/a-sm.jpg";
 
 export const studentData = [
   {

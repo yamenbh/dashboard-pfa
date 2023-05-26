@@ -1,35 +1,88 @@
 import React, { useState, useEffect, useContext } from "react";
-import Content from "../../../layout/content/Content";
-import Head from "../../../layout/head/Head";
-import { findUpper } from "../../../utils/Utils";
-import { professeurData,  filterStatus } from "./ProfesseurData";
-import { DropdownMenu,DropdownToggle,UncontrolledDropdown,Modal,ModalBody,DropdownItem,Form,} from "reactstrap";
-import {Block,BlockBetween,BlockDes,BlockHead,BlockHeadContent,BlockTitle,Icon,Col,UserAvatar,PaginationComponent,DataTable,DataTableBody,DataTableHead,DataTableRow, DataTableItem, Button,RSelect,TooltipComponent,
-} from "../../../components/Component";
+import Content from "../../layout/content/Content";
+import Head from "../../layout/head/Head";
+import { findUpper } from "../../utils/Utils";
+import { studentData, filterRole, filterStatus } from "./StudentData";
+import {
+  DropdownMenu,
+  DropdownToggle,
+  
+  UncontrolledDropdown,
+  Modal,
+  ModalBody,
+  DropdownItem,
+  Form,
+} from "reactstrap";
+import {
+  Block,
+  BlockBetween,
+  BlockDes,
+  BlockHead,
+  BlockHeadContent,
+  BlockTitle,
+  Icon,
+  Row,
+  Col,
+  UserAvatar,
+  PaginationComponent,
+  DataTable,
+  DataTableBody,
+  DataTableHead,
+  DataTableRow,
+  DataTableItem,
+  Button,
+  RSelect,
+  TooltipComponent,
+} from "../../components/Component";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { ProfesseurContext } from "./ProfesseurContext";
-import { bulkActionOptions } from "../../../utils/Utils";
+import { StudentContext } from "./StudentContext";
+import { bulkActionOptions } from "../../utils/Utils";
 
-const ProfesseurListCompact = () => {
-  const { contextData } = useContext(ProfesseurContext);
+const StudentListCompact = () => {
+  const { contextData } = useContext(StudentContext);
   const [data, setData] = contextData;
 
   const [sm, updateSm] = useState(false);
   const [tablesm, updateTableSm] = useState(false);
   const [onSearch, setonSearch] = useState(true);
   const [onSearchText, setSearchText] = useState("");
-  const [modal, setModal] = useState({edit: false,add: false, });
+  const [modal, setModal] = useState({
+    edit: false,
+    add: false,
+  });
   const [editId, setEditedId] = useState();
-  const [formData, setFormData] = useState({name: "",email: "",specialite: "",phone: "",status: "Active",});
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    specialite: "",
+    phone: "",
+    filier: "",
+    niveau: "",
+    groupe: "",
+    status: "Active",
+  });
   const [actionText, setActionText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemPerPage] = useState(10);
+  const [itemPerPage, setItemPerPage] = useState(10);
+  const [sort, setSortState] = useState("");
+
+  // Sorting data
+  const sortFunc = (params) => {
+    let defaultData = data;
+    if (params === "asc") {
+      let sortedData = defaultData.sort((a, b) => a.name.localeCompare(b.name));
+      setData([...sortedData]);
+    } else if (params === "dsc") {
+      let sortedData = defaultData.sort((a, b) => b.name.localeCompare(a.name));
+      setData([...sortedData]);
+    }
+  };
 
   // unselects the data on mount
   useEffect(() => {
     let newData;
-    newData = professeurData.map((item) => {
+    newData = studentData.map((item) => {
       item.checked = false;
       return item;
     });
@@ -39,7 +92,7 @@ const ProfesseurListCompact = () => {
   // Changing state value when searching name
   useEffect(() => {
     if (onSearchText !== "") {
-      const filteredObject = professeurData.filter((item) => {
+      const filteredObject = studentData.filter((item) => {
         return (
           item.name.toLowerCase().includes(onSearchText.toLowerCase()) ||
           item.email.toLowerCase().includes(onSearchText.toLowerCase())
@@ -47,7 +100,7 @@ const ProfesseurListCompact = () => {
       });
       setData([...filteredObject]);
     } else {
-      setData([...professeurData]);
+      setData([...studentData]);
     }
   }, [onSearchText, setData]);
 
@@ -71,7 +124,16 @@ const ProfesseurListCompact = () => {
 
   // function to reset the form
   const resetForm = () => {
-    setFormData({name: "",email: "",specialite: "",phone: "",status: "Active",});
+    setFormData({
+      name: "",
+      email: "",
+      specialite: "",
+      phone: "",
+      filier: "",
+      niveau: "",
+      groupe: "",
+      status: "Active",
+    });
   };
 
   // function to close the form modal
@@ -82,7 +144,7 @@ const ProfesseurListCompact = () => {
 
   // submit function to add a new item
   const onFormSubmit = (submitData) => {
-    const { name, email, specialite, phone } = submitData;
+    const { name, email, specialite, phone , filier , niveau , groupe} = submitData;
     let submittedData = {
       id: data.length + 1,
       avatarBg: "purple",
@@ -91,9 +153,12 @@ const ProfesseurListCompact = () => {
       email: email,
       specialite: specialite,
       phone: phone,
+      filier: filier,
+      niveau: niveau,
+      groupe: groupe,
       emailStatus: "success",
       kycStatus: "alert",
-      
+      specialite: "10 Feb 2020",
       status: formData.status,
       country: "Bangladesh",
     };
@@ -104,7 +169,7 @@ const ProfesseurListCompact = () => {
 
   // submit function to update a new item
   const onEditSubmit = (submitData) => {
-    const { name, email, phone } = submitData;
+    const { name, email, phone, filier, niveau, groupe } = submitData;
     let submittedData;
     let newitems = data;
     newitems.forEach((item) => {
@@ -118,6 +183,9 @@ const ProfesseurListCompact = () => {
           email: email,
           specialite: formData.specialite,
           phone: "+" + phone,
+          filier: item.filier,
+          niveau: item.niveau,
+          groupe: item.groupe,
           emailStatus: item.emailStatus,
           kycStatus: item.kycStatus,
           specialite: item.specialite,
@@ -140,6 +208,9 @@ const ProfesseurListCompact = () => {
           email: item.email,
           status: item.status,
           phone: item.phone,
+          filier: item.filier,
+          niveau: item.niveau,
+          groupe: item.groupe,
           specialite: item.specialite,
         });
         setModal({ edit: true }, { add: false });
@@ -149,7 +220,7 @@ const ProfesseurListCompact = () => {
   };
 
   // function to change to suspend property for an item
-  const suspendProfesseur = (id) => {
+  const suspendStudent = (id) => {
     let newData = data;
     let index = newData.findIndex((item) => item.id === id);
     newData[index].status = "Suspend";
@@ -196,27 +267,31 @@ const ProfesseurListCompact = () => {
 
   return (
     <React.Fragment>
-      <Head title="Professeurs - Compact"></Head>
+      <Head title="Etudiants - Compact"></Head>
       <Content>
         <BlockHead size="sm">
           <BlockBetween>
             <BlockHeadContent>
               <BlockTitle tag="h3" page>
-                Professeurs Listes
+                Etudiants Listes
               </BlockTitle>
               <BlockDes className="text-soft">
-                <p>You have total 2,595 professeurs.</p>
+                <p>You have total 2,595 etudiants.</p>
               </BlockDes>
             </BlockHeadContent>
             <BlockHeadContent>
               <div className="toggle-wrap nk-block-tools-toggle">
-                <Button className={`btn-icon btn-trigger toggle-expand me-n1 ${sm ? "active" : ""}`} onClick={() => updateSm(!sm)}>
+                <Button
+                  className={`btn-icon btn-trigger toggle-expand me-n1 ${sm ? "active" : ""}`}
+                  onClick={() => updateSm(!sm)}
+                >
                   <Icon name="menu-alt-r"></Icon>
                 </Button>
                 <div className="toggle-expand-content" style={{ display: sm ? "block" : "none" }}>
                   <ul className="nk-block-tools g-3">
                     <li>
-                      <a href="#export"
+                      <a
+                        href="#export"
                         onClick={(ev) => {
                           ev.preventDefault();
                         }}
@@ -330,7 +405,7 @@ const ProfesseurListCompact = () => {
                     <input
                       type="text"
                       className="border-transparent form-focus-none form-control"
-                      placeholder="Search by professeur or email"
+                      placeholder="Search by student or email"
                       value={onSearchText}
                       onChange={(e) => onFilterChange(e)}
                     />
@@ -355,7 +430,7 @@ const ProfesseurListCompact = () => {
                   </div>
                 </DataTableRow>
                 <DataTableRow>
-                  <span className="sub-text">Professeur</span>
+                  <span className="sub-text">Student</span>
                 </DataTableRow>
                 <DataTableRow size="md">
                   <span className="sub-text">Email</span>
@@ -365,6 +440,15 @@ const ProfesseurListCompact = () => {
                 </DataTableRow>
                 <DataTableRow size="lg">
                   <span className="sub-text">Specialité</span>
+                </DataTableRow>
+                <DataTableRow size="sm">
+                  <span className="sub-text">filier</span>
+                </DataTableRow>
+                <DataTableRow size="sm">
+                  <span className="sub-text">niveau</span>
+                </DataTableRow>
+                <DataTableRow size="sm">
+                  <span className="sub-text">groupe</span>
                 </DataTableRow>
                 <DataTableRow>
                   <span className="sub-text">Status</span>
@@ -432,15 +516,15 @@ const ProfesseurListCompact = () => {
                           </div>
                         </DataTableRow>
                         <DataTableRow>
-                          <Link to={`${process.env.PUBLIC_URL}/professeur-details-regular/${item.id}`}>
-                            <div className="professeur-card">
+                          <Link to={`${process.env.PUBLIC_URL}/student-details-regular/${item.id}`}>
+                            <div className="student-card">
                               <UserAvatar
                                 theme={item.avatarBg}
                                 className="xs"
                                 text={findUpper(item.name)}
                                 image={item.image}
                               ></UserAvatar>
-                              <div className="professeur-name">
+                              <div className="student-name">
                                 <span className="tb-lead">{item.name}</span>
                               </div>
                             </div>
@@ -456,6 +540,15 @@ const ProfesseurListCompact = () => {
                        
                         <DataTableRow size="lg">
                           <span>{item.specialite}</span>
+                        </DataTableRow>
+                        <DataTableRow size="lg">
+                          <span>{item.filier}</span>
+                        </DataTableRow>
+                        <DataTableRow size="lg">
+                          <span>{item.niveau}</span>
+                        </DataTableRow>
+                        <DataTableRow size="lg">
+                          <span>{item.groupe}</span>
                         </DataTableRow>
                         <DataTableRow>
                           <span
@@ -480,12 +573,12 @@ const ProfesseurListCompact = () => {
                             </li>
                             {item.status !== "Suspend" && (
                               <React.Fragment>
-                                <li className="nk-tb-action-hidden" onClick={() => suspendProfesseur(item.id)}>
+                                <li className="nk-tb-action-hidden" onClick={() => suspendStudent(item.id)}>
                                   <TooltipComponent
                                     tag="a"
                                     containerClassName="btn btn-trigger btn-icon"
                                     id={"suspend" + item.id}
-                                    icon="professeur-cross-fill"
+                                    icon="student-cross-fill"
                                     direction="top"
                                     text="Suspend"
                                   />
@@ -514,7 +607,7 @@ const ProfesseurListCompact = () => {
                                     {item.status !== "Suspend" && (
                                       <React.Fragment>
                                         <li className="divider"></li>
-                                        <li onClick={() => suspendProfesseur(item.id)}>
+                                        <li onClick={() => suspendStudent(item.id)}>
                                           <DropdownItem
                                             tag="a"
                                             href="#suspend"
@@ -523,7 +616,7 @@ const ProfesseurListCompact = () => {
                                             }}
                                           >
                                             <Icon name="na"></Icon>
-                                            <span>Suspend Professeur</span>
+                                            <span>Suspend Student</span>
                                           </DropdownItem>
                                         </li>
                                       </React.Fragment>
@@ -568,7 +661,7 @@ const ProfesseurListCompact = () => {
               <Icon name="cross-sm"></Icon>
             </a>
             <div className="p-2">
-              <h5 className="title">Add Professeur</h5>
+              <h5 className="title">Add Etudiant</h5>
               <div className="mt-4">
                 <Form className="row gy-4" onSubmit={handleSubmit(onFormSubmit)}>
                   <Col md="6">
@@ -627,7 +720,52 @@ const ProfesseurListCompact = () => {
                       {errors.phone && <span className="invalid">{errors.phone.message}</span>}
                     </div>
                   </Col>
-                  <Col md="12">
+                  <Col md="6">
+                    <div className="form-group">
+                      <label className="form-label">filier</label>
+                      <input
+                        className="form-control"
+                        type="text"
+                        name="filier"
+                        defaultValue={formData.filier}
+                        ref={register({
+                          required: "This field is required",
+                        })}
+                      />
+                      {errors.filier && <span className="invalid">{errors.filier.message}</span>}
+                    </div>
+                  </Col>
+                  <Col md="6">
+                    <div className="form-group">
+                      <label className="form-label">niveau</label>
+                      <input
+                        className="form-control"
+                        type="text"
+                        name="niveau"
+                        defaultValue={formData.niveau}
+                        ref={register({
+                          required: "This field is required",
+                        })}
+                      />
+                      {errors.niveau && <span className="invalid">{errors.niveau.message}</span>}
+                    </div>
+                  </Col>
+                  <Col md="6">
+                    <div className="form-group">
+                      <label className="form-label">Groupe</label>
+                      <input
+                        className="form-control"
+                        type="text"
+                        name="groupe"
+                        defaultValue={formData.groupe}
+                        ref={register({
+                          required: "This field is required",
+                        })}
+                      />
+                      {errors.groupe && <span className="invalid">{errors.groupe.message}</span>}
+                    </div>
+                  </Col>
+                  <Col md="6">
                     <div className="form-group">
                       <label className="form-label">Status</label>
                       <div className="form-control-wrap">
@@ -643,7 +781,7 @@ const ProfesseurListCompact = () => {
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
                         <Button color="primary" size="md" type="submit">
-                          Add Professeur
+                          Add Etudiant
                         </Button>
                       </li>
                       <li>
@@ -678,7 +816,7 @@ const ProfesseurListCompact = () => {
               <Icon name="cross-sm"></Icon>
             </a>
             <div className="p-2">
-              <h5 className="title">Update Professeur</h5>
+              <h5 className="title">Update Etudiant</h5>
               <div className="mt-4">
                 <Form className="row gy-4" onSubmit={handleSubmit(onEditSubmit)}>
                   <Col md="6">
@@ -762,7 +900,7 @@ const ProfesseurListCompact = () => {
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
                         <Button color="primary" size="md" type="submit">
-                          Update Professeur
+                          Update Student
                         </Button>
                       </li>
                       <li>
@@ -788,4 +926,4 @@ const ProfesseurListCompact = () => {
     </React.Fragment>
   );
 };
-export default ProfesseurListCompact;
+export default StudentListCompact;

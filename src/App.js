@@ -14,7 +14,7 @@ import Error504Classic from "./pages/error/504-classic";
 import Login from "./pages/auth/Login";
 
 
-import ConvocationPrint from "./pages/pre-built/convocation/ConvocationPrint";
+import ConvocationPrint from "./pages/convocation/ConvocationPrint";
 
 const App = (props) => {
 

@@ -1,4 +1,4 @@
-import User3 from "../../../images/avatar/a-sm.jpg";
+import User3 from "../../images/avatar/a-sm.jpg";
 
 export const userData = [
   {
@@ -7,7 +7,7 @@ export const userData = [
     name: "Aymane Ait El Bhiri",
     displayName: "aymane",
     dob: "10 Aug, 1980",
-    role: "Customer",
+    role: "admin",
     checked: false,
     email: "info@softnio.com",
     balance: "35,040.34",
@@ -30,7 +30,7 @@ export const userData = [
     image: User3,
     name: "MALAK EL BHIRI",
     dob: "10 Sept, 1990",
-    role: "Investor",
+    role: "admin",
     email: "ashley@softnio.com",
     balance: "580.00",
     checked: false,

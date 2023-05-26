@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Head from "../../../layout/head/Head";
+import Head from "../../layout/head/Head";
 import DatePicker from "react-datepicker";
 import { Modal, ModalBody } from "reactstrap";
 import {
@@ -14,13 +14,13 @@ import {
   Col,
   Button,
   RSelect,
-} from "../../../components/Component";
-import { countryOptions, professeurData } from "./ProfesseurData";
-import { getDateStructured } from "../../../utils/Utils";
+} from "../../components/Component";
+import { countryOptions, userData } from "./UserData";
+import { getDateStructured } from "../../utils/Utils";
 
-const ProfesseurProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
+const UserProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
   const [modalTab, setModalTab] = useState("1");
-  const [professeurInfo, setProfesseurInfo] = useState(professeurData[0]);
+  const [userInfo, setUserInfo] = useState(userData[0]);
   const [formData, setFormData] = useState({
     name: "Abu Bin Ishtiak",
     displayName: "Ishtiak",
@@ -32,12 +32,12 @@ const ProfesseurProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
     country: "Canada",
   });
   const [modal, setModal] = useState(false);
-  const [currentProfesseur, setCurentProfesseur] = useState()
+  const [currentUser, setCurentUser] = useState()
 
   useEffect(()=>{
-    const professeur = localStorage.getItem("currentProfesseur")
-    setCurentProfesseur(JSON.parse(professeur))
-    setFormData(JSON.parse(professeur))
+    const user = localStorage.getItem("currentUser")
+    setCurentUser(JSON.parse(user))
+    setFormData(JSON.parse(user))
   }, [])
 
   useEffect(() => {
@@ -52,13 +52,13 @@ const ProfesseurProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
     let submitData = {
       ...formData,
     };
-    setProfesseurInfo(submitData);
+    setUserInfo(submitData);
     setModal(false);
   };
 
   return (
     <React.Fragment>
-      <Head title="Professeur List - Profile"></Head>
+      <Head title="User List - Profile"></Head>
       <BlockHead size="lg">
         <BlockBetween>
           <BlockHeadContent>
@@ -86,7 +86,7 @@ const ProfesseurProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
           <div className="data-item" onClick={() => setModal(true)}>
             <div className="data-col">
               <span className="data-label">Full Name</span>
-              <span className="data-value">{currentProfesseur?.name}</span>
+              <span className="data-value">{currentUser?.name}</span>
             </div>
             <div className="data-col data-col-end">
               <span className="data-more">
@@ -97,7 +97,7 @@ const ProfesseurProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
           <div className="data-item" onClick={() => setModal(true)}>
             <div className="data-col">
               <span className="data-label">Display Name</span>
-              <span className="data-value">{currentProfesseur?.name}</span>
+              <span className="data-value">{currentUser?.name}</span>
             </div>
             <div className="data-col data-col-end">
               <span className="data-more">
@@ -108,7 +108,7 @@ const ProfesseurProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
           <div className="data-item">
             <div className="data-col">
               <span className="data-label">Email</span>
-              <span className="data-value">{currentProfesseur?.email}</span>
+              <span className="data-value">{currentUser?.email}</span>
             </div>
             <div className="data-col data-col-end">
               <span className="data-more disable">
@@ -119,7 +119,7 @@ const ProfesseurProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
           <div className="data-item" onClick={() => setModal(true)}>
             <div className="data-col">
               <span className="data-label">Phone Number</span>
-              <span className="data-value text-soft">{currentProfesseur?.phone}</span>
+              <span className="data-value text-soft">{currentUser?.phone}</span>
             </div>
             <div className="data-col data-col-end">
               <span className="data-more">
@@ -131,7 +131,7 @@ const ProfesseurProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
             <div className="data-col">
               <span className="data-label">Major</span>
               <span className="data-value">
-                {currentProfesseur?.major}
+                {currentUser?.major}
               </span>
             </div>
             <div className="data-col data-col-end">
@@ -284,4 +284,4 @@ const ProfesseurProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
     </React.Fragment>
   );
 };
-export default ProfesseurProfileRegularPage;
+export default UserProfileRegularPage;

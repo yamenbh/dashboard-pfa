@@ -1,27 +1,28 @@
 import React, { Suspense, useLayoutEffect } from "react";
 import { Switch, Route } from "react-router-dom";
-import { ProfesseurContextProvider } from "../pages/pre-built/professeur-manage/ProfesseurContext";
-import { StudentContextProvider } from "../pages/pre-built/student-manage/StudentContext";
-import { SurveillantContextProvider } from "../pages/pre-built/surveillant-manage/SurveillantContext";
-import { UserContextProvider } from "../pages/pre-built/user-manage/UserContext";
+import { ProfesseurContextProvider } from "../pages/professeur-manage/ProfesseurContext";
+import { StudentContextProvider } from "../pages/student-manage/StudentContext";
+import { SurveillantContextProvider } from "../pages/surveillant-manage/SurveillantContext";
+import { UserContextProvider } from "../pages/user-manage/UserContext";
+
 import { RedirectAs404 } from "../utils/Utils";
 
 import Homepage from "../pages/Homepage";
 
-import ProfesseurListCompact from "../pages/pre-built/professeur-manage/ProfesseurListCompact";
-import StudentListCompact from "../pages/pre-built/student-manage/StudentListCompact";
-import SurveillantListCompact from "../pages/pre-built/surveillant-manage/SurveillantListCompact";
-import UserListCompact from "../pages/pre-built/user-manage/UserListCompact"; 
-import ConvocationList from "../pages/pre-built/convocation/ConvocationList";
+import ProfesseurListCompact from "../pages/professeur-manage/ProfesseurListCompact";
+import StudentListCompact from "../pages/student-manage/StudentListCompact";
+import SurveillantListCompact from "../pages/surveillant-manage/SurveillantListCompact";
+import UserListCompact from "../pages/user-manage/UserListCompact"; 
+import ConvocationList from "../pages/convocation/ConvocationList";
 
-import ConvocationDetails from "../pages/pre-built/convocation/ConvocationDetails";
+import ConvocationDetails from "../pages/convocation/ConvocationDetails";
 
 import Calender from "../pages/app/calender/Calender";
 
-import ProfesseurProfileLayout from "../pages/pre-built/professeur-manage/ProfesseurProfileLayout";
-import StudentProfileLayout from "../pages/pre-built/student-manage/StudentProfileLayout";
-import SurveillantProfileLayout from "../pages/pre-built/surveillant-manage/SurveillantProfileLayout";
-import UserProfileLayout from "../pages/pre-built/user-manage/UserProfileLayout";
+import ProfesseurProfileLayout from "../pages/professeur-manage/ProfesseurProfileLayout";
+import StudentProfileLayout from "../pages/student-manage/StudentProfileLayout";
+import SurveillantProfileLayout from "../pages/surveillant-manage/SurveillantProfileLayout";
+import UserProfileLayout from "../pages/user-manage/UserProfileLayout";
 
 const Pages = () => {
   useLayoutEffect(() => {
@@ -86,10 +87,6 @@ const Pages = () => {
         
         <Route exact path={`${process.env.PUBLIC_URL}/user-profile-regular/`} component={UserProfileLayout}></Route>
         <Route exact path={`${process.env.PUBLIC_URL}/user-profile-setting/`} component={UserProfileLayout}></Route>
-        
-        
-        
-        
 
         <Route exact path={`${process.env.PUBLIC_URL}/convocation-list`} component={ConvocationList}></Route>
         <Route exact path={`${process.env.PUBLIC_URL}/convocation-details/:id`} component={ConvocationDetails}></Route>

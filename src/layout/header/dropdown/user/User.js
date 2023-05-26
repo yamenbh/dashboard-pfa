@@ -30,7 +30,7 @@ const User = () => {
         <div className="user-toggle">
           <UserAvatar icon="user-alt" className="sm" />
           <div className="user-info d-none d-md-block">
-            <div className="user-status">Student</div>
+            <div className="user-status">Admin</div>
             <div className="user-name dropdown-indicator">{currentUser?.name}</div>
           </div>
         </div>

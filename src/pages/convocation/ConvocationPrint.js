@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Button, Icon, Block } from "../../../components/Component";
-import Content from "../../../layout/content/Content";
-import Head from "../../../layout/head/Head";
-import LogoDark from "../../../images/whatsapp.jpg";
+import { Button, Icon, Block } from "../../components/Component";
+import Content from "../../layout/content/Content";
+import Head from "../../layout/head/Head";
+import LogoDark from "../../images/whatsapp.jpg";
 import { convocationData } from "./Convocation";
 import QRCode from "react-qr-code";
 const ConvocationPrint = ({ match }) => {

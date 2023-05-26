@@ -10,10 +10,10 @@ import {
   BlockHeadContent,
   Block,
   BlockBetween,
-} from "../../../components/Component";
-import Content from "../../../layout/content/Content";
-import Head from "../../../layout/head/Head";
-import LogoDark from "../../../images/whatsapp.jpg";
+} from "../../components/Component";
+import Content from "../../layout/content/Content";
+import Head from "../../layout/head/Head";
+import LogoDark from "../../images/whatsapp.jpg";
 //import { convocationData } from "./Convocation";
 import { Link } from "react-router-dom";
 

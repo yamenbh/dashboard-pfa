@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
-import Content from "../../../layout/content/Content";
-import ProfesseurProfileRegularPage from "./ProfesseurProfileRegular";
+import Content from "../../layout/content/Content";
+import SurveillantProfileRegularPage from "./SurveillantProfileRegular";
 import { Route, Switch, Link } from "react-router-dom";
-import { Icon, UserAvatar } from "../../../components/Component";
-import { findUpper } from "../../../utils/Utils";
+import { Icon, UserAvatar } from "../../components/Component";
+import { findUpper } from "../../utils/Utils";
 import { Card } from "reactstrap";
 
 
-const ProfesseurProfileLayout = ({match}) => {
+const SurveillantProfileLayout = ({match}) => {
   //000000000000000000
-/*   const { contextData } = useContext(ProfesseurContext);
+/*   const { contextData } = useContext(SurveillantContext);
   const [data] = contextData;
   const [noteData, setNoteData] = useState(notes); */
 
@@ -18,11 +18,11 @@ const ProfesseurProfileLayout = ({match}) => {
   const [sm, updateSm] = useState(false);
   const [mobileView, setMobileView] = useState(false);
   const [profileName, setProfileName] = useState("ABIRA Fatiha");
-  const [currentProfesseur, setCurentProfesseur] = useState()
+  const [currentSurveillant, setCurentSurveillant] = useState()
 
   useEffect(()=>{
-    const professeur = localStorage.getItem("currentProfesseur")
-    setCurentProfesseur(JSON.parse(professeur))
+    const surveillant = localStorage.getItem("currentSurveillant")
+    setCurentSurveillant(JSON.parse(surveillant))
   }, [])
   // function to change the design view under 990 px
    // grabs the id of the url and loads the corresponding data
@@ -30,8 +30,8 @@ const ProfesseurProfileLayout = ({match}) => {
   /*  useEffect(() => {
     const id = match.params.id;
     if (id !== undefined || null || "") {
-      let spProfesseur = data.find((item) => item.id === Number(id));
-      setProfileName(spProfesseur);
+      let spSurveillant = data.find((item) => item.id === Number(id));
+      setProfileName(spSurveillant);
     } else {
       setProfileName(data[0]);
     }
@@ -67,17 +67,17 @@ const ProfesseurProfileLayout = ({match}) => {
         <Card className="card-bordered">
           <div className="card-aside-wrap">
             <div
-              className={`card-aside card-aside-left professeur-aside toggle-slide toggle-slide-left toggle-break-lg ${
+              className={`card-aside card-aside-left surveillant-aside toggle-slide toggle-slide-left toggle-break-lg ${
                 sm ? "content-active" : ""
               }`}
             >
               <div className="card-inner-group">
                 <div className="card-inner">
-                  <div className="professeur-card">
+                  <div className="surveillant-card">
                     <UserAvatar text={findUpper(profileName)} theme="primary" />
-                    <div className="professeur-info">
-                      <span className="lead-text">{currentProfesseur?.name}</span>
-                      <span className="sub-text">{currentProfesseur?.email}</span>
+                    <div className="surveillant-info">
+                      <span className="lead-text">{currentSurveillant?.name}</span>
+                      <span className="sub-text">{currentSurveillant?.email}</span>
                     </div>
                     
                   </div>
@@ -87,12 +87,12 @@ const ProfesseurProfileLayout = ({match}) => {
                   <ul className="link-list-menu">
                     <li onClick={() => updateSm(false)}>
                       <Link
-                        to={`${process.env.PUBLIC_URL}/professeur-profile-regular`}
+                        to={`${process.env.PUBLIC_URL}/surveillant-profile-regular`}
                         className={
-                          window.location.pathname === `${process.env.PUBLIC_URL}/professeur-profile-regular` ? "active" : ""
+                          window.location.pathname === `${process.env.PUBLIC_URL}/surveillant-profile-regular` ? "active" : ""
                         }
                       >
-                        <Icon name="professeur-fill-c"></Icon>
+                        <Icon name="surveillant-fill-c"></Icon>
                         <span>Personal Information</span>
                       </Link>
                     </li>
@@ -107,8 +107,8 @@ const ProfesseurProfileLayout = ({match}) => {
               <Switch>
                 <Route
                   exact
-                  path={`${process.env.PUBLIC_URL}/professeur-profile-regular`}
-                  render={() => <ProfesseurProfileRegularPage updateSm={updateSm} sm={sm} setProfileName={setProfileName} />}
+                  path={`${process.env.PUBLIC_URL}/surveillant-profile-regular`}
+                  render={() => <SurveillantProfileRegularPage updateSm={updateSm} sm={sm} setProfileName={setProfileName} />}
                 ></Route>
                 
               </Switch>
@@ -121,4 +121,4 @@ const ProfesseurProfileLayout = ({match}) => {
   );
 };
 
-export default ProfesseurProfileLayout;
+export default SurveillantProfileLayout;

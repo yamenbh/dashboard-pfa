@@ -1,85 +1,35 @@
 import React, { useState, useEffect, useContext } from "react";
-import Content from "../../../layout/content/Content";
-import Head from "../../../layout/head/Head";
-import { findUpper } from "../../../utils/Utils";
-import { surveillantData, filterRole, filterStatus } from "./SurveillantData";
-import {
-  DropdownMenu,
-  DropdownToggle,
-  
-  UncontrolledDropdown,
-  Modal,
-  ModalBody,
-  DropdownItem,
-  Form,
-} from "reactstrap";
-import {
-  Block,
-  BlockBetween,
-  BlockDes,
-  BlockHead,
-  BlockHeadContent,
-  BlockTitle,
-  Icon,
-  Row,
-  Col,
-  UserAvatar,
-  PaginationComponent,
-  DataTable,
-  DataTableBody,
-  DataTableHead,
-  DataTableRow,
-  DataTableItem,
-  Button,
-  RSelect,
-  TooltipComponent,
-} from "../../../components/Component";
+import Content from "../../layout/content/Content";
+import Head from "../../layout/head/Head";
+import { findUpper } from "../../utils/Utils";
+import { professeurData,  filterStatus } from "./ProfesseurData";
+import { DropdownMenu,DropdownToggle,UncontrolledDropdown,Modal,ModalBody,DropdownItem,Form,} from "reactstrap";
+import {Block,BlockBetween,BlockDes,BlockHead,BlockHeadContent,BlockTitle,Icon,Col,UserAvatar,PaginationComponent,DataTable,DataTableBody,DataTableHead,DataTableRow, DataTableItem, Button,RSelect,TooltipComponent,
+} from "../../components/Component";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { SurveillantContext } from "./SurveillantContext";
-import { bulkActionOptions } from "../../../utils/Utils";
+import { ProfesseurContext } from "./ProfesseurContext";
+import { bulkActionOptions } from "../../utils/Utils";
 
-const SurveillantListCompact = () => {
-  const { contextData } = useContext(SurveillantContext);
+const ProfesseurListCompact = () => {
+  const { contextData } = useContext(ProfesseurContext);
   const [data, setData] = contextData;
 
   const [sm, updateSm] = useState(false);
   const [tablesm, updateTableSm] = useState(false);
   const [onSearch, setonSearch] = useState(true);
   const [onSearchText, setSearchText] = useState("");
-  const [modal, setModal] = useState({
-    edit: false,
-    add: false,
-  });
+  const [modal, setModal] = useState({edit: false,add: false, });
   const [editId, setEditedId] = useState();
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    specialite: "",
-    phone: "",
-    status: "Active",
-  });
+  const [formData, setFormData] = useState({name: "",email: "",specialite: "",phone: "",status: "Active",});
   const [actionText, setActionText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemPerPage, setItemPerPage] = useState(10);
-  const [sort, setSortState] = useState("");
-
-  // Sorting data
-  const sortFunc = (params) => {
-    let defaultData = data;
-    if (params === "asc") {
-      let sortedData = defaultData.sort((a, b) => a.name.localeCompare(b.name));
-      setData([...sortedData]);
-    } else if (params === "dsc") {
-      let sortedData = defaultData.sort((a, b) => b.name.localeCompare(a.name));
-      setData([...sortedData]);
-    }
-  };
+  const [itemPerPage] = useState(10);
 
   // unselects the data on mount
   useEffect(() => {
     let newData;
-    newData = surveillantData.map((item) => {
+    newData = professeurData.map((item) => {
       item.checked = false;
       return item;
     });
@@ -89,7 +39,7 @@ const SurveillantListCompact = () => {
   // Changing state value when searching name
   useEffect(() => {
     if (onSearchText !== "") {
-      const filteredObject = surveillantData.filter((item) => {
+      const filteredObject = professeurData.filter((item) => {
         return (
           item.name.toLowerCase().includes(onSearchText.toLowerCase()) ||
           item.email.toLowerCase().includes(onSearchText.toLowerCase())
@@ -97,7 +47,7 @@ const SurveillantListCompact = () => {
       });
       setData([...filteredObject]);
     } else {
-      setData([...surveillantData]);
+      setData([...professeurData]);
     }
   }, [onSearchText, setData]);
 
@@ -121,13 +71,7 @@ const SurveillantListCompact = () => {
 
   // function to reset the form
   const resetForm = () => {
-    setFormData({
-      name: "",
-      email: "",
-      specialite: "",
-      phone: "",
-      status: "Active",
-    });
+    setFormData({name: "",email: "",specialite: "",phone: "",status: "Active",});
   };
 
   // function to close the form modal
@@ -149,7 +93,7 @@ const SurveillantListCompact = () => {
       phone: phone,
       emailStatus: "success",
       kycStatus: "alert",
-      specialite: "10 Feb 2020",
+      
       status: formData.status,
       country: "Bangladesh",
     };
@@ -205,7 +149,7 @@ const SurveillantListCompact = () => {
   };
 
   // function to change to suspend property for an item
-  const suspendSurveillant = (id) => {
+  const suspendProfesseur = (id) => {
     let newData = data;
     let index = newData.findIndex((item) => item.id === id);
     newData[index].status = "Suspend";
@@ -252,31 +196,27 @@ const SurveillantListCompact = () => {
 
   return (
     <React.Fragment>
-      <Head title="Surveillants - Compact"></Head>
+      <Head title="Professeurs - Compact"></Head>
       <Content>
         <BlockHead size="sm">
           <BlockBetween>
             <BlockHeadContent>
               <BlockTitle tag="h3" page>
-                Surveillants Listes
+                Professeurs Listes
               </BlockTitle>
               <BlockDes className="text-soft">
-                <p>You have total 2,595 surveillants.</p>
+                <p>You have total 2,595 professeurs.</p>
               </BlockDes>
             </BlockHeadContent>
             <BlockHeadContent>
               <div className="toggle-wrap nk-block-tools-toggle">
-                <Button
-                  className={`btn-icon btn-trigger toggle-expand me-n1 ${sm ? "active" : ""}`}
-                  onClick={() => updateSm(!sm)}
-                >
+                <Button className={`btn-icon btn-trigger toggle-expand me-n1 ${sm ? "active" : ""}`} onClick={() => updateSm(!sm)}>
                   <Icon name="menu-alt-r"></Icon>
                 </Button>
                 <div className="toggle-expand-content" style={{ display: sm ? "block" : "none" }}>
                   <ul className="nk-block-tools g-3">
                     <li>
-                      <a
-                        href="#export"
+                      <a href="#export"
                         onClick={(ev) => {
                           ev.preventDefault();
                         }}
@@ -390,7 +330,7 @@ const SurveillantListCompact = () => {
                     <input
                       type="text"
                       className="border-transparent form-focus-none form-control"
-                      placeholder="Search by surveillant or email"
+                      placeholder="Search by professeur or email"
                       value={onSearchText}
                       onChange={(e) => onFilterChange(e)}
                     />
@@ -415,7 +355,7 @@ const SurveillantListCompact = () => {
                   </div>
                 </DataTableRow>
                 <DataTableRow>
-                  <span className="sub-text">Surveillant</span>
+                  <span className="sub-text">Professeur</span>
                 </DataTableRow>
                 <DataTableRow size="md">
                   <span className="sub-text">Email</span>
@@ -492,15 +432,15 @@ const SurveillantListCompact = () => {
                           </div>
                         </DataTableRow>
                         <DataTableRow>
-                          <Link to={`${process.env.PUBLIC_URL}/surveillant-details-regular/${item.id}`}>
-                            <div className="surveillant-card">
+                          <Link to={`${process.env.PUBLIC_URL}/professeur-details-regular/${item.id}`}>
+                            <div className="professeur-card">
                               <UserAvatar
                                 theme={item.avatarBg}
                                 className="xs"
                                 text={findUpper(item.name)}
                                 image={item.image}
                               ></UserAvatar>
-                              <div className="surveillant-name">
+                              <div className="professeur-name">
                                 <span className="tb-lead">{item.name}</span>
                               </div>
                             </div>
@@ -540,12 +480,12 @@ const SurveillantListCompact = () => {
                             </li>
                             {item.status !== "Suspend" && (
                               <React.Fragment>
-                                <li className="nk-tb-action-hidden" onClick={() => suspendSurveillant(item.id)}>
+                                <li className="nk-tb-action-hidden" onClick={() => suspendProfesseur(item.id)}>
                                   <TooltipComponent
                                     tag="a"
                                     containerClassName="btn btn-trigger btn-icon"
                                     id={"suspend" + item.id}
-                                    icon="surveillant-cross-fill"
+                                    icon="professeur-cross-fill"
                                     direction="top"
                                     text="Suspend"
                                   />
@@ -574,7 +514,7 @@ const SurveillantListCompact = () => {
                                     {item.status !== "Suspend" && (
                                       <React.Fragment>
                                         <li className="divider"></li>
-                                        <li onClick={() => suspendSurveillant(item.id)}>
+                                        <li onClick={() => suspendProfesseur(item.id)}>
                                           <DropdownItem
                                             tag="a"
                                             href="#suspend"
@@ -583,7 +523,7 @@ const SurveillantListCompact = () => {
                                             }}
                                           >
                                             <Icon name="na"></Icon>
-                                            <span>Suspend Surveillant</span>
+                                            <span>Suspend Professeur</span>
                                           </DropdownItem>
                                         </li>
                                       </React.Fragment>
@@ -628,7 +568,7 @@ const SurveillantListCompact = () => {
               <Icon name="cross-sm"></Icon>
             </a>
             <div className="p-2">
-              <h5 className="title">Add Surveillant</h5>
+              <h5 className="title">Add Professeur</h5>
               <div className="mt-4">
                 <Form className="row gy-4" onSubmit={handleSubmit(onFormSubmit)}>
                   <Col md="6">
@@ -703,7 +643,7 @@ const SurveillantListCompact = () => {
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
                         <Button color="primary" size="md" type="submit">
-                          Add Surveillant
+                          Add Professeur
                         </Button>
                       </li>
                       <li>
@@ -738,7 +678,7 @@ const SurveillantListCompact = () => {
               <Icon name="cross-sm"></Icon>
             </a>
             <div className="p-2">
-              <h5 className="title">Update Surveillant</h5>
+              <h5 className="title">Update Professeur</h5>
               <div className="mt-4">
                 <Form className="row gy-4" onSubmit={handleSubmit(onEditSubmit)}>
                   <Col md="6">
@@ -822,7 +762,7 @@ const SurveillantListCompact = () => {
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
                         <Button color="primary" size="md" type="submit">
-                          Update Surveillant
+                          Update Professeur
                         </Button>
                       </li>
                       <li>
@@ -848,4 +788,4 @@ const SurveillantListCompact = () => {
     </React.Fragment>
   );
 };
-export default SurveillantListCompact;
+export default ProfesseurListCompact;

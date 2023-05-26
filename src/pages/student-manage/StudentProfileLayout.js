@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Content from "../../../layout/content/Content";
+import Content from "../../layout/content/Content";
 import StudentProfileRegularPage from "./StudentProfileRegular";
 import { Route, Switch, Link } from "react-router-dom";
-import { Icon, UserAvatar } from "../../../components/Component";
-import { findUpper } from "../../../utils/Utils";
+import { Icon, UserAvatar } from "../../components/Component";
+import { findUpper } from "../../utils/Utils";
 import { Card } from "reactstrap";
 
 const StudentProfileLayout = () => {

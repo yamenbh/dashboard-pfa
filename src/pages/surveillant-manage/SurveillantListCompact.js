@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
-import Content from "../../../layout/content/Content";
-import Head from "../../../layout/head/Head";
-import { findUpper } from "../../../utils/Utils";
-import { studentData, filterRole, filterStatus } from "./StudentData";
+import Content from "../../layout/content/Content";
+import Head from "../../layout/head/Head";
+import { findUpper } from "../../utils/Utils";
+import { surveillantData, filterRole, filterStatus } from "./SurveillantData";
 import {
   DropdownMenu,
   DropdownToggle,
@@ -33,14 +33,14 @@ import {
   Button,
   RSelect,
   TooltipComponent,
-} from "../../../components/Component";
+} from "../../components/Component";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { StudentContext } from "./StudentContext";
-import { bulkActionOptions } from "../../../utils/Utils";
+import { SurveillantContext } from "./SurveillantContext";
+import { bulkActionOptions } from "../../utils/Utils";
 
-const StudentListCompact = () => {
-  const { contextData } = useContext(StudentContext);
+const SurveillantListCompact = () => {
+  const { contextData } = useContext(SurveillantContext);
   const [data, setData] = contextData;
 
   const [sm, updateSm] = useState(false);
@@ -57,9 +57,6 @@ const StudentListCompact = () => {
     email: "",
     specialite: "",
     phone: "",
-    filier: "",
-    niveau: "",
-    groupe: "",
     status: "Active",
   });
   const [actionText, setActionText] = useState("");
@@ -82,7 +79,7 @@ const StudentListCompact = () => {
   // unselects the data on mount
   useEffect(() => {
     let newData;
-    newData = studentData.map((item) => {
+    newData = surveillantData.map((item) => {
       item.checked = false;
       return item;
     });
@@ -92,7 +89,7 @@ const StudentListCompact = () => {
   // Changing state value when searching name
   useEffect(() => {
     if (onSearchText !== "") {
-      const filteredObject = studentData.filter((item) => {
+      const filteredObject = surveillantData.filter((item) => {
         return (
           item.name.toLowerCase().includes(onSearchText.toLowerCase()) ||
           item.email.toLowerCase().includes(onSearchText.toLowerCase())
@@ -100,7 +97,7 @@ const StudentListCompact = () => {
       });
       setData([...filteredObject]);
     } else {
-      setData([...studentData]);
+      setData([...surveillantData]);
     }
   }, [onSearchText, setData]);
 
@@ -129,9 +126,6 @@ const StudentListCompact = () => {
       email: "",
       specialite: "",
       phone: "",
-      filier: "",
-      niveau: "",
-      groupe: "",
       status: "Active",
     });
   };
@@ -144,7 +138,7 @@ const StudentListCompact = () => {
 
   // submit function to add a new item
   const onFormSubmit = (submitData) => {
-    const { name, email, specialite, phone , filier , niveau , groupe} = submitData;
+    const { name, email, specialite, phone } = submitData;
     let submittedData = {
       id: data.length + 1,
       avatarBg: "purple",
@@ -153,9 +147,6 @@ const StudentListCompact = () => {
       email: email,
       specialite: specialite,
       phone: phone,
-      filier: filier,
-      niveau: niveau,
-      groupe: groupe,
       emailStatus: "success",
       kycStatus: "alert",
       specialite: "10 Feb 2020",
@@ -169,7 +160,7 @@ const StudentListCompact = () => {
 
   // submit function to update a new item
   const onEditSubmit = (submitData) => {
-    const { name, email, phone, filier, niveau, groupe } = submitData;
+    const { name, email, phone } = submitData;
     let submittedData;
     let newitems = data;
     newitems.forEach((item) => {
@@ -183,9 +174,6 @@ const StudentListCompact = () => {
           email: email,
           specialite: formData.specialite,
           phone: "+" + phone,
-          filier: item.filier,
-          niveau: item.niveau,
-          groupe: item.groupe,
           emailStatus: item.emailStatus,
           kycStatus: item.kycStatus,
           specialite: item.specialite,
@@ -208,9 +196,6 @@ const StudentListCompact = () => {
           email: item.email,
           status: item.status,
           phone: item.phone,
-          filier: item.filier,
-          niveau: item.niveau,
-          groupe: item.groupe,
           specialite: item.specialite,
         });
         setModal({ edit: true }, { add: false });
@@ -220,7 +205,7 @@ const StudentListCompact = () => {
   };
 
   // function to change to suspend property for an item
-  const suspendStudent = (id) => {
+  const suspendSurveillant = (id) => {
     let newData = data;
     let index = newData.findIndex((item) => item.id === id);
     newData[index].status = "Suspend";
@@ -267,16 +252,16 @@ const StudentListCompact = () => {
 
   return (
     <React.Fragment>
-      <Head title="Etudiants - Compact"></Head>
+      <Head title="Surveillants - Compact"></Head>
       <Content>
         <BlockHead size="sm">
           <BlockBetween>
             <BlockHeadContent>
               <BlockTitle tag="h3" page>
-                Etudiants Listes
+                Surveillants Listes
               </BlockTitle>
               <BlockDes className="text-soft">
-                <p>You have total 2,595 etudiants.</p>
+                <p>You have total 2,595 surveillants.</p>
               </BlockDes>
             </BlockHeadContent>
             <BlockHeadContent>
@@ -405,7 +390,7 @@ const StudentListCompact = () => {
                     <input
                       type="text"
                       className="border-transparent form-focus-none form-control"
-                      placeholder="Search by student or email"
+                      placeholder="Search by surveillant or email"
                       value={onSearchText}
                       onChange={(e) => onFilterChange(e)}
                     />
@@ -430,7 +415,7 @@ const StudentListCompact = () => {
                   </div>
                 </DataTableRow>
                 <DataTableRow>
-                  <span className="sub-text">Student</span>
+                  <span className="sub-text">Surveillant</span>
                 </DataTableRow>
                 <DataTableRow size="md">
                   <span className="sub-text">Email</span>
@@ -440,15 +425,6 @@ const StudentListCompact = () => {
                 </DataTableRow>
                 <DataTableRow size="lg">
                   <span className="sub-text">Specialité</span>
-                </DataTableRow>
-                <DataTableRow size="sm">
-                  <span className="sub-text">filier</span>
-                </DataTableRow>
-                <DataTableRow size="sm">
-                  <span className="sub-text">niveau</span>
-                </DataTableRow>
-                <DataTableRow size="sm">
-                  <span className="sub-text">groupe</span>
                 </DataTableRow>
                 <DataTableRow>
                   <span className="sub-text">Status</span>
@@ -516,15 +492,15 @@ const StudentListCompact = () => {
                           </div>
                         </DataTableRow>
                         <DataTableRow>
-                          <Link to={`${process.env.PUBLIC_URL}/student-details-regular/${item.id}`}>
-                            <div className="student-card">
+                          <Link to={`${process.env.PUBLIC_URL}/surveillant-details-regular/${item.id}`}>
+                            <div className="surveillant-card">
                               <UserAvatar
                                 theme={item.avatarBg}
                                 className="xs"
                                 text={findUpper(item.name)}
                                 image={item.image}
                               ></UserAvatar>
-                              <div className="student-name">
+                              <div className="surveillant-name">
                                 <span className="tb-lead">{item.name}</span>
                               </div>
                             </div>
@@ -540,15 +516,6 @@ const StudentListCompact = () => {
                        
                         <DataTableRow size="lg">
                           <span>{item.specialite}</span>
-                        </DataTableRow>
-                        <DataTableRow size="lg">
-                          <span>{item.filier}</span>
-                        </DataTableRow>
-                        <DataTableRow size="lg">
-                          <span>{item.niveau}</span>
-                        </DataTableRow>
-                        <DataTableRow size="lg">
-                          <span>{item.groupe}</span>
                         </DataTableRow>
                         <DataTableRow>
                           <span
@@ -573,12 +540,12 @@ const StudentListCompact = () => {
                             </li>
                             {item.status !== "Suspend" && (
                               <React.Fragment>
-                                <li className="nk-tb-action-hidden" onClick={() => suspendStudent(item.id)}>
+                                <li className="nk-tb-action-hidden" onClick={() => suspendSurveillant(item.id)}>
                                   <TooltipComponent
                                     tag="a"
                                     containerClassName="btn btn-trigger btn-icon"
                                     id={"suspend" + item.id}
-                                    icon="student-cross-fill"
+                                    icon="surveillant-cross-fill"
                                     direction="top"
                                     text="Suspend"
                                   />
@@ -607,7 +574,7 @@ const StudentListCompact = () => {
                                     {item.status !== "Suspend" && (
                                       <React.Fragment>
                                         <li className="divider"></li>
-                                        <li onClick={() => suspendStudent(item.id)}>
+                                        <li onClick={() => suspendSurveillant(item.id)}>
                                           <DropdownItem
                                             tag="a"
                                             href="#suspend"
@@ -616,7 +583,7 @@ const StudentListCompact = () => {
                                             }}
                                           >
                                             <Icon name="na"></Icon>
-                                            <span>Suspend Student</span>
+                                            <span>Suspend Surveillant</span>
                                           </DropdownItem>
                                         </li>
                                       </React.Fragment>
@@ -661,7 +628,7 @@ const StudentListCompact = () => {
               <Icon name="cross-sm"></Icon>
             </a>
             <div className="p-2">
-              <h5 className="title">Add Etudiant</h5>
+              <h5 className="title">Add Surveillant</h5>
               <div className="mt-4">
                 <Form className="row gy-4" onSubmit={handleSubmit(onFormSubmit)}>
                   <Col md="6">
@@ -720,52 +687,7 @@ const StudentListCompact = () => {
                       {errors.phone && <span className="invalid">{errors.phone.message}</span>}
                     </div>
                   </Col>
-                  <Col md="6">
-                    <div className="form-group">
-                      <label className="form-label">filier</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        name="filier"
-                        defaultValue={formData.filier}
-                        ref={register({
-                          required: "This field is required",
-                        })}
-                      />
-                      {errors.filier && <span className="invalid">{errors.filier.message}</span>}
-                    </div>
-                  </Col>
-                  <Col md="6">
-                    <div className="form-group">
-                      <label className="form-label">niveau</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        name="niveau"
-                        defaultValue={formData.niveau}
-                        ref={register({
-                          required: "This field is required",
-                        })}
-                      />
-                      {errors.niveau && <span className="invalid">{errors.niveau.message}</span>}
-                    </div>
-                  </Col>
-                  <Col md="6">
-                    <div className="form-group">
-                      <label className="form-label">Groupe</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        name="groupe"
-                        defaultValue={formData.groupe}
-                        ref={register({
-                          required: "This field is required",
-                        })}
-                      />
-                      {errors.groupe && <span className="invalid">{errors.groupe.message}</span>}
-                    </div>
-                  </Col>
-                  <Col md="6">
+                  <Col md="12">
                     <div className="form-group">
                       <label className="form-label">Status</label>
                       <div className="form-control-wrap">
@@ -781,7 +703,7 @@ const StudentListCompact = () => {
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
                         <Button color="primary" size="md" type="submit">
-                          Add Etudiant
+                          Add Surveillant
                         </Button>
                       </li>
                       <li>
@@ -816,7 +738,7 @@ const StudentListCompact = () => {
               <Icon name="cross-sm"></Icon>
             </a>
             <div className="p-2">
-              <h5 className="title">Update Etudiant</h5>
+              <h5 className="title">Update Surveillant</h5>
               <div className="mt-4">
                 <Form className="row gy-4" onSubmit={handleSubmit(onEditSubmit)}>
                   <Col md="6">
@@ -900,7 +822,7 @@ const StudentListCompact = () => {
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
                         <Button color="primary" size="md" type="submit">
-                          Update Student
+                          Update Surveillant
                         </Button>
                       </li>
                       <li>
@@ -926,4 +848,4 @@ const StudentListCompact = () => {
     </React.Fragment>
   );
 };
-export default StudentListCompact;
+export default SurveillantListCompact;

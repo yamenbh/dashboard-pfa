@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Content from "../../../layout/content/Content";
-import Head from "../../../layout/head/Head";
+import Content from "../../layout/content/Content";
+import Head from "../../layout/head/Head";
 import { UncontrolledDropdown, DropdownMenu, DropdownToggle, Card, Badge, DropdownItem } from "reactstrap";
 import {
   Button,
@@ -12,7 +12,7 @@ import {
   BlockTitle,
   Icon,
   PaginationComponent,
-} from "../../../components/Component";
+} from "../../components/Component";
 import { Link } from "react-router-dom";
 import { convocationData } from "./Convocation";
 
