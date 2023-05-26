@@ -2,11 +2,10 @@ import React, { useState, useEffect, useContext } from "react";
 import Content from "../../layout/content/Content";
 import Head from "../../layout/head/Head";
 import { findUpper } from "../../utils/Utils";
-import { studentData, filterRole, filterStatus } from "./StudentData";
+import { studentData,filterStatus } from "./StudentData";
 import {
   DropdownMenu,
   DropdownToggle,
-  
   UncontrolledDropdown,
   Modal,
   ModalBody,
@@ -57,27 +56,49 @@ const StudentListCompact = () => {
     email: "",
     specialite: "",
     phone: "",
-    filier: "",
+    filiere: "",
     niveau: "",
     groupe: "",
     status: "Active",
   });
   const [actionText, setActionText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemPerPage, setItemPerPage] = useState(10);
-  const [sort, setSortState] = useState("");
+  const [itemPerPage] = useState(10);
+  
+  // unselects the data on mount
+  useEffect(() => {
+    let newData;
+    newData = studentData.map((item) => {
+      item.checked = false;
+      return item;
+    });
+    setData([...newData]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  const [stud,setStud]=useState([])
+  useEffect(() => {
+    fetch('http://localhost:8080/user/etudiant')
+      .then((response) => response.json())
+      .then((data) => {setStud(data)
+      console.log(data)})
+      .catch((error) => console.error('Error:', error));
+  }, []);
 
-  // Sorting data
-  const sortFunc = (params) => {
-    let defaultData = data;
-    if (params === "asc") {
-      let sortedData = defaultData.sort((a, b) => a.name.localeCompare(b.name));
-      setData([...sortedData]);
-    } else if (params === "dsc") {
-      let sortedData = defaultData.sort((a, b) => b.name.localeCompare(a.name));
-      setData([...sortedData]);
+    //http://localhost:8080/user/professeur
+  // Changing state value when searching name
+  useEffect(() => {
+    if (onSearchText !== "") {
+      const filteredObject = studentData.filter((item) => {
+        return (
+          item.name.toLowerCase().includes(onSearchText.toLowerCase()) ||
+          item.email.toLowerCase().includes(onSearchText.toLowerCase())
+        );
+      });
+      setData([...filteredObject]);
+    } else {
+      setData([...studentData]);
     }
-  };
+  }, [onSearchText, setData]);
+
 
   // unselects the data on mount
   useEffect(() => {
@@ -129,7 +150,7 @@ const StudentListCompact = () => {
       email: "",
       specialite: "",
       phone: "",
-      filier: "",
+      filiere: "",
       niveau: "",
       groupe: "",
       status: "Active",
@@ -144,7 +165,7 @@ const StudentListCompact = () => {
 
   // submit function to add a new item
   const onFormSubmit = (submitData) => {
-    const { name, email, specialite, phone , filier , niveau , groupe} = submitData;
+    const { name, email, specialite, phone , filiere , niveau , groupe} = submitData;
     let submittedData = {
       id: data.length + 1,
       avatarBg: "purple",
@@ -153,7 +174,7 @@ const StudentListCompact = () => {
       email: email,
       specialite: specialite,
       phone: phone,
-      filier: filier,
+      filiere: filiere,
       niveau: niveau,
       groupe: groupe,
       emailStatus: "success",
@@ -169,7 +190,7 @@ const StudentListCompact = () => {
 
   // submit function to update a new item
   const onEditSubmit = (submitData) => {
-    const { name, email, phone, filier, niveau, groupe } = submitData;
+    const { name, email, phone, filiere, niveau, groupe } = submitData;
     let submittedData;
     let newitems = data;
     newitems.forEach((item) => {
@@ -183,7 +204,7 @@ const StudentListCompact = () => {
           email: email,
           specialite: formData.specialite,
           phone: "+" + phone,
-          filier: item.filier,
+          filiere: item.filiere,
           niveau: item.niveau,
           groupe: item.groupe,
           emailStatus: item.emailStatus,
@@ -208,7 +229,7 @@ const StudentListCompact = () => {
           email: item.email,
           status: item.status,
           phone: item.phone,
-          filier: item.filier,
+          filiere: item.filiere,
           niveau: item.niveau,
           groupe: item.groupe,
           specialite: item.specialite,
@@ -220,7 +241,7 @@ const StudentListCompact = () => {
   };
 
   // function to change to suspend property for an item
-  const suspendStudent = (id) => {
+  const suspendProfesseur = (id) => {
     let newData = data;
     let index = newData.findIndex((item) => item.id === id);
     newData[index].status = "Suspend";
@@ -435,14 +456,9 @@ const StudentListCompact = () => {
                 <DataTableRow size="md">
                   <span className="sub-text">Email</span>
                 </DataTableRow>
+              
                 <DataTableRow size="sm">
-                  <span className="sub-text">Telephone</span>
-                </DataTableRow>
-                <DataTableRow size="lg">
-                  <span className="sub-text">Specialité</span>
-                </DataTableRow>
-                <DataTableRow size="sm">
-                  <span className="sub-text">filier</span>
+                  <span className="sub-text">filiere</span>
                 </DataTableRow>
                 <DataTableRow size="sm">
                   <span className="sub-text">niveau</span>
@@ -450,9 +466,7 @@ const StudentListCompact = () => {
                 <DataTableRow size="sm">
                   <span className="sub-text">groupe</span>
                 </DataTableRow>
-                <DataTableRow>
-                  <span className="sub-text">Status</span>
-                </DataTableRow>
+                
                 <DataTableRow className="nk-tb-col-tools text-end">
                   <UncontrolledDropdown>
                     <DropdownToggle tag="a" className="btn btn-xs btn-outline-light btn-icon dropdown-toggle">
@@ -460,22 +474,8 @@ const StudentListCompact = () => {
                     </DropdownToggle>
                     <DropdownMenu end className="dropdown-menu-xs">
                       <ul className="link-tidy sm no-bdr">
-                        <li>
-                          <div className="custom-control custom-control-sm custom-checkbox">
-                            <input type="checkbox" className="custom-control-input" id="bl" />
-                            <label className="custom-control-label" htmlFor="bl">
-                              specialite
-                            </label>
-                          </div>
-                        </li>
-                        <li>
-                          <div className="custom-control custom-control-sm custom-checkbox">
-                            <input type="checkbox" className="custom-control-input" id="ph" />
-                            <label className="custom-control-label" htmlFor="ph">
-                              Telephone
-                            </label>
-                          </div>
-                        </li>
+                        
+    
                         <li>
                           <div className="custom-control custom-control-sm custom-checkbox">
                             <input type="checkbox" className="custom-control-input" id="vri" />
@@ -484,14 +484,7 @@ const StudentListCompact = () => {
                             </label>
                           </div>
                         </li>
-                        <li>
-                          <div className="custom-control custom-control-sm custom-checkbox">
-                            <input type="checkbox" className="custom-control-input" id="st" />
-                            <label className="custom-control-label" htmlFor="st">
-                              Status
-                            </label>
-                          </div>
-                        </li>
+                        
                       </ul>
                     </DropdownMenu>
                   </UncontrolledDropdown>
@@ -499,7 +492,7 @@ const StudentListCompact = () => {
               </DataTableHead>
               {/*Head*/}
               {currentItems.length > 0
-                ? currentItems.map((item) => {
+                ? stud.map((item) => {
                     return (
                       <DataTableItem key={item.id}>
                         <DataTableRow className="nk-tb-col-check">
@@ -517,15 +510,15 @@ const StudentListCompact = () => {
                         </DataTableRow>
                         <DataTableRow>
                           <Link to={`${process.env.PUBLIC_URL}/student-details-regular/${item.id}`}>
-                            <div className="student-card">
+                            <div className="user-card">
                               <UserAvatar
                                 theme={item.avatarBg}
                                 className="xs"
-                                text={findUpper(item.name)}
-                                image={item.image}
+                                text={findUpper(item.nom)}
+                                
                               ></UserAvatar>
-                              <div className="student-name">
-                                <span className="tb-lead">{item.name}</span>
+                              <div className="user-name">
+                                <span className="tb-lead">{item.nom}</span>
                               </div>
                             </div>
                           </Link>
@@ -534,15 +527,10 @@ const StudentListCompact = () => {
                         <DataTableRow size="sm">
                           <span>{item.email}</span>
                         </DataTableRow>
-                        <DataTableRow size="md">
-                          <span>{item.phone}</span>
-                        </DataTableRow>
                        
+          
                         <DataTableRow size="lg">
-                          <span>{item.specialite}</span>
-                        </DataTableRow>
-                        <DataTableRow size="lg">
-                          <span>{item.filier}</span>
+                          <span>{item.filiere}</span>
                         </DataTableRow>
                         <DataTableRow size="lg">
                           <span>{item.niveau}</span>
@@ -550,15 +538,7 @@ const StudentListCompact = () => {
                         <DataTableRow size="lg">
                           <span>{item.groupe}</span>
                         </DataTableRow>
-                        <DataTableRow>
-                          <span
-                            className={`tb-status text-${
-                              item.status === "Active" ? "success" : item.status === "Pending" ? "warning" : "danger"
-                            }`}
-                          >
-                            {item.status}
-                          </span>
-                        </DataTableRow>
+                        
                         <DataTableRow className="nk-tb-col-tools">
                           <ul className="nk-tb-actions gx-1">
                             <li className="nk-tb-action-hidden" onClick={() => onEditClick(item.id)}>
@@ -571,20 +551,7 @@ const StudentListCompact = () => {
                                 text="Edit"
                               />
                             </li>
-                            {item.status !== "Suspend" && (
-                              <React.Fragment>
-                                <li className="nk-tb-action-hidden" onClick={() => suspendStudent(item.id)}>
-                                  <TooltipComponent
-                                    tag="a"
-                                    containerClassName="btn btn-trigger btn-icon"
-                                    id={"suspend" + item.id}
-                                    icon="student-cross-fill"
-                                    direction="top"
-                                    text="Suspend"
-                                  />
-                                </li>
-                              </React.Fragment>
-                            )}
+                            
                             <li>
                               <UncontrolledDropdown>
                                 <DropdownToggle tag="a" className="dropdown-toggle btn btn-icon btn-trigger">
@@ -604,23 +571,7 @@ const StudentListCompact = () => {
                                         <span>Edit</span>
                                       </DropdownItem>
                                     </li>
-                                    {item.status !== "Suspend" && (
-                                      <React.Fragment>
-                                        <li className="divider"></li>
-                                        <li onClick={() => suspendStudent(item.id)}>
-                                          <DropdownItem
-                                            tag="a"
-                                            href="#suspend"
-                                            onClick={(ev) => {
-                                              ev.preventDefault();
-                                            }}
-                                          >
-                                            <Icon name="na"></Icon>
-                                            <span>Suspend Student</span>
-                                          </DropdownItem>
-                                        </li>
-                                      </React.Fragment>
-                                    )}
+                                  
                                   </ul>
                                 </DropdownMenu>
                               </UncontrolledDropdown>
@@ -691,48 +642,21 @@ const StudentListCompact = () => {
                       {errors.email && <span className="invalid">{errors.email.message}</span>}
                     </div>
                   </Col>
+                 
+                  
                   <Col md="6">
                     <div className="form-group">
-                      <label className="form-label">Specialité</label>
+                      <label className="form-label">filiere</label>
                       <input
                         className="form-control"
                         type="text"
-                        name="specialite"
-                        defaultValue={formData.specialite}
-                        placeholder="specialite"
-                        ref={register({ required: "This field is required" })}
-                      />
-                      {errors.specialite && <span className="invalid">{errors.specialite.message}</span>}
-                    </div>
-                  </Col>
-                  <Col md="6">
-                    <div className="form-group">
-                      <label className="form-label">Telephone</label>
-                      <input
-                        className="form-control"
-                        type="number"
-                        name="phone"
-                        defaultValue={formData.phone}
+                        name="filiere"
+                        defaultValue={formData.filiere}
                         ref={register({
                           required: "This field is required",
                         })}
                       />
-                      {errors.phone && <span className="invalid">{errors.phone.message}</span>}
-                    </div>
-                  </Col>
-                  <Col md="6">
-                    <div className="form-group">
-                      <label className="form-label">filier</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        name="filier"
-                        defaultValue={formData.filier}
-                        ref={register({
-                          required: "This field is required",
-                        })}
-                      />
-                      {errors.filier && <span className="invalid">{errors.filier.message}</span>}
+                      {errors.filiere && <span className="invalid">{errors.filiere.message}</span>}
                     </div>
                   </Col>
                   <Col md="6">
@@ -765,18 +689,7 @@ const StudentListCompact = () => {
                       {errors.groupe && <span className="invalid">{errors.groupe.message}</span>}
                     </div>
                   </Col>
-                  <Col md="6">
-                    <div className="form-group">
-                      <label className="form-label">Status</label>
-                      <div className="form-control-wrap">
-                        <RSelect
-                          options={filterStatus}
-                          defaultValue={{ value: "active", label: "Active" }}
-                          onChange={(e) => setFormData({ ...formData, status: e.value })}
-                        />
-                      </div>
-                    </div>
-                  </Col>
+                 
                   <Col size="12">
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
@@ -853,49 +766,9 @@ const StudentListCompact = () => {
                       {errors.email && <span className="invalid">{errors.email.message}</span>}
                     </div>
                   </Col>
-                  <Col md="6">
-                    <div className="form-group">
-                      <label className="form-label">Specialite</label>
-                      <input
-                        className="form-control"
-                        type="number"
-                        name="specialite"
-                        disabled
-                        defaultValue={parseFloat(formData.specialite.replace(/,/g, ""))}
-                        placeholder="specialite"
-                        ref={register({ required: "This field is required" })}
-                      />
-                      {errors.specialite && <span className="invalid">{errors.specialite.message}</span>}
-                    </div>
-                  </Col>
-                  <Col md="6">
-                    <div className="form-group">
-                      <label className="form-label">Telephone</label>
-                      <input
-                        className="form-control"
-                        type="number"
-                        name="phone"
-                        defaultValue={Number(formData.phone)}
-                        ref={register({ required: "This field is required" })}
-                      />
-                      {errors.phone && <span className="invalid">{errors.phone.message}</span>}
-                    </div>
-                  </Col>
-                  <Col md="12">
-                    <div className="form-group">
-                      <label className="form-label">Status</label>
-                      <div className="form-control-wrap">
-                        <RSelect
-                          options={filterStatus}
-                          defaultValue={{
-                            value: formData.status,
-                            label: formData.status,
-                          }}
-                          onChange={(e) => setFormData({ ...formData, status: e.value })}
-                        />
-                      </div>
-                    </div>
-                  </Col>
+                
+                  
+                  
                   <Col size="12">
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>

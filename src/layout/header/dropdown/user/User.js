@@ -31,7 +31,7 @@ const User = () => {
           <UserAvatar icon="user-alt" className="sm" />
           <div className="user-info d-none d-md-block">
             <div className="user-status">Admin</div>
-            <div className="user-name dropdown-indicator">{currentUser?.name}</div>
+            <div className="user-name dropdown-indicator">{currentUser?.nom}</div>
           </div>
         </div>
       </DropdownToggle>
@@ -42,7 +42,7 @@ const User = () => {
               <span>AB</span>
             </div>
             <div className="user-info">
-              <span className="lead-text">{currentUser?.name}</span>
+              <span className="lead-text">{currentUser?.nom}</span>
               <span className="sub-text">{currentUser?.email}</span>
             </div>
           </div>

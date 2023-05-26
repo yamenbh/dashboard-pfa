@@ -6,7 +6,6 @@ import { surveillantData, filterRole, filterStatus } from "./SurveillantData";
 import {
   DropdownMenu,
   DropdownToggle,
-  
   UncontrolledDropdown,
   Modal,
   ModalBody,
@@ -430,15 +429,8 @@ const SurveillantListCompact = () => {
                 <DataTableRow size="md">
                   <span className="sub-text">Email</span>
                 </DataTableRow>
-                <DataTableRow size="sm">
-                  <span className="sub-text">Telephone</span>
-                </DataTableRow>
-                <DataTableRow size="lg">
-                  <span className="sub-text">Specialité</span>
-                </DataTableRow>
-                <DataTableRow>
-                  <span className="sub-text">Status</span>
-                </DataTableRow>
+          
+               
                 <DataTableRow className="nk-tb-col-tools text-end">
                   <UncontrolledDropdown>
                     <DropdownToggle tag="a" className="btn btn-xs btn-outline-light btn-icon dropdown-toggle">
@@ -446,22 +438,7 @@ const SurveillantListCompact = () => {
                     </DropdownToggle>
                     <DropdownMenu end className="dropdown-menu-xs">
                       <ul className="link-tidy sm no-bdr">
-                        <li>
-                          <div className="custom-control custom-control-sm custom-checkbox">
-                            <input type="checkbox" className="custom-control-input" id="bl" />
-                            <label className="custom-control-label" htmlFor="bl">
-                              specialite
-                            </label>
-                          </div>
-                        </li>
-                        <li>
-                          <div className="custom-control custom-control-sm custom-checkbox">
-                            <input type="checkbox" className="custom-control-input" id="ph" />
-                            <label className="custom-control-label" htmlFor="ph">
-                              Telephone
-                            </label>
-                          </div>
-                        </li>
+                       
                         <li>
                           <div className="custom-control custom-control-sm custom-checkbox">
                             <input type="checkbox" className="custom-control-input" id="vri" />
@@ -470,14 +447,7 @@ const SurveillantListCompact = () => {
                             </label>
                           </div>
                         </li>
-                        <li>
-                          <div className="custom-control custom-control-sm custom-checkbox">
-                            <input type="checkbox" className="custom-control-input" id="st" />
-                            <label className="custom-control-label" htmlFor="st">
-                              Status
-                            </label>
-                          </div>
-                        </li>
+                        
                       </ul>
                     </DropdownMenu>
                   </UncontrolledDropdown>
@@ -503,13 +473,13 @@ const SurveillantListCompact = () => {
                         </DataTableRow>
                         <DataTableRow>
                           <Link to={`${process.env.PUBLIC_URL}/surveillant-details-regular/${item.id}`}>
-                            <div className="surveillant-card">
+                            <div className="user-card">
                               <UserAvatar
                                 theme={item.avatarBg}
                                 className="xs"
                                 text={findUpper(item.nom)}
                               ></UserAvatar>
-                              <div className="surveillant-name">
+                              <div className="user-name">
                                 <span className="tb-lead">{item.nom}</span>
                               </div>
                             </div>
@@ -523,18 +493,8 @@ const SurveillantListCompact = () => {
                           <span>{item.phone}</span>
                         </DataTableRow> */}
                        
-                        <DataTableRow size="lg">
-                          <span>{item.specialite}</span>
-                        </DataTableRow>
-                        <DataTableRow>
-                          <span
-                            className={`tb-status text-${
-                              item.status === "Active" ? "success" : item.status === "Pending" ? "warning" : "danger"
-                            }`}
-                          >
-                            {item.prenom}
-                          </span>
-                        </DataTableRow>
+                     
+                      
                         <DataTableRow className="nk-tb-col-tools">
                           <ul className="nk-tb-actions gx-1">
                             <li className="nk-tb-action-hidden" onClick={() => onEditClick(item.id)}>
@@ -667,47 +627,9 @@ const SurveillantListCompact = () => {
                       {errors.email && <span className="invalid">{errors.email.message}</span>}
                     </div>
                   </Col>
-                  <Col md="6">
-                    <div className="form-group">
-                      <label className="form-label">Specialité</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        name="specialite"
-                        defaultValue={formData.specialite}
-                        placeholder="specialite"
-                        ref={register({ required: "This field is required" })}
-                      />
-                      {errors.specialite && <span className="invalid">{errors.specialite.message}</span>}
-                    </div>
-                  </Col>
-                  <Col md="6">
-                    <div className="form-group">
-                      <label className="form-label">Telephone</label>
-                      <input
-                        className="form-control"
-                        type="number"
-                        name="phone"
-                        defaultValue={formData.phone}
-                        ref={register({
-                          required: "This field is required",
-                        })}
-                      />
-                      {errors.phone && <span className="invalid">{errors.phone.message}</span>}
-                    </div>
-                  </Col>
-                  <Col md="12">
-                    <div className="form-group">
-                      <label className="form-label">Status</label>
-                      <div className="form-control-wrap">
-                        <RSelect
-                          options={filterStatus}
-                          defaultValue={{ value: "active", label: "Active" }}
-                          onChange={(e) => setFormData({ ...formData, status: e.value })}
-                        />
-                      </div>
-                    </div>
-                  </Col>
+              
+                 
+                
                   <Col size="12">
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
@@ -784,49 +706,9 @@ const SurveillantListCompact = () => {
                       {errors.email && <span className="invalid">{errors.email.message}</span>}
                     </div>
                   </Col>
-                  <Col md="6">
-                    <div className="form-group">
-                      <label className="form-label">Specialite</label>
-                      <input
-                        className="form-control"
-                        type="number"
-                        name="specialite"
-                        disabled
-                        defaultValue={parseFloat(formData.specialite.replace(/,/g, ""))}
-                        placeholder="specialite"
-                        ref={register({ required: "This field is required" })}
-                      />
-                      {errors.specialite && <span className="invalid">{errors.specialite.message}</span>}
-                    </div>
-                  </Col>
-                  <Col md="6">
-                    <div className="form-group">
-                      <label className="form-label">Telephone</label>
-                      <input
-                        className="form-control"
-                        type="number"
-                        name="phone"
-                        defaultValue={Number(formData.phone)}
-                        ref={register({ required: "This field is required" })}
-                      />
-                      {errors.phone && <span className="invalid">{errors.phone.message}</span>}
-                    </div>
-                  </Col>
-                  <Col md="12">
-                    <div className="form-group">
-                      <label className="form-label">Status</label>
-                      <div className="form-control-wrap">
-                        <RSelect
-                          options={filterStatus}
-                          defaultValue={{
-                            value: formData.status,
-                            label: formData.status,
-                          }}
-                          onChange={(e) => setFormData({ ...formData, status: e.value })}
-                        />
-                      </div>
-                    </div>
-                  </Col>
+                
+                  
+               
                   <Col size="12">
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>

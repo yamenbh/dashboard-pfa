@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Head from "../../layout/head/Head";
-import DatePicker from "react-datepicker";
 import { Modal, ModalBody } from "reactstrap";
 import {
   Block,
@@ -13,14 +12,13 @@ import {
   Row,
   Col,
   Button,
-  RSelect,
 } from "../../components/Component";
-import { countryOptions, userData } from "./UserData";
-import { getDateStructured } from "../../utils/Utils";
+import { userData } from "./UserData";
+
 
 const UserProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
   const [modalTab, setModalTab] = useState("1");
-  const [userInfo, setUserInfo] = useState(userData[0]);
+  const [setUserInfo] = useState(userData[0]);
   const [formData, setFormData] = useState({
     name: "Abu Bin Ishtiak",
     displayName: "Ishtiak",
@@ -41,11 +39,11 @@ const UserProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
   }, [])
 
   useEffect(() => {
-    setProfileName(formData.name);
+    setProfileName(formData.nom);
   }, [formData, setProfileName]);
 
   const onInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.nom]: e.target.value });
   };
 
   const submitForm = () => {
@@ -86,7 +84,7 @@ const UserProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
           <div className="data-item" onClick={() => setModal(true)}>
             <div className="data-col">
               <span className="data-label">Full Name</span>
-              <span className="data-value">{currentUser?.name}</span>
+              <span className="data-value">{currentUser?.nom}</span>
             </div>
             <div className="data-col data-col-end">
               <span className="data-more">
@@ -97,7 +95,7 @@ const UserProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
           <div className="data-item" onClick={() => setModal(true)}>
             <div className="data-col">
               <span className="data-label">Display Name</span>
-              <span className="data-value">{currentUser?.name}</span>
+              <span className="data-value">{currentUser?.nom}</span>
             </div>
             <div className="data-col data-col-end">
               <span className="data-more">
@@ -116,30 +114,7 @@ const UserProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
               </span>
             </div>
           </div>
-          <div className="data-item" onClick={() => setModal(true)}>
-            <div className="data-col">
-              <span className="data-label">Phone Number</span>
-              <span className="data-value text-soft">{currentUser?.phone}</span>
-            </div>
-            <div className="data-col data-col-end">
-              <span className="data-more">
-                <Icon name="forward-ios"></Icon>
-              </span>
-            </div>
-          </div>
-          <div className="data-item" onClick={() => setModal(true)}>
-            <div className="data-col">
-              <span className="data-label">Major</span>
-              <span className="data-value">
-                {currentUser?.major}
-              </span>
-            </div>
-            <div className="data-col data-col-end">
-              <span className="data-more">
-                <Icon name="forward-ios"></Icon>
-              </span>
-            </div>
-          </div>
+        
         </div>
         
       </Block>
@@ -186,7 +161,7 @@ const UserProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
                         className="form-control"
                         name="name"
                         onChange={(e) => onInputChange(e)}
-                        defaultValue={formData?.name}
+                        defaultValue={formData?.nom}
                         placeholder="Enter Full name"
                       />
                     </div>
@@ -207,38 +182,8 @@ const UserProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
                       />
                     </div>
                   </Col>
-                  <Col md="6">
-                    <div className="form-group">
-                      <label className="form-label" htmlFor="phone-no">
-                        Phone Number
-                      </label>
-                      <input
-                        type="text"
-                        id="phone-no"
-                        className="form-control"
-                        name="phone"
-                        onChange={(e) => onInputChange(e)}
-                        defaultValue={formData?.phone}
-                        placeholder="Phone Number"
-                      />
-                    </div>
-                  </Col>
-                  <Col md="6">
-                    <div className="form-group">
-                      <label className="form-label" htmlFor="major">
-                        Major
-                      </label>
-                      <input
-                        type="text"
-                        id="major-id"
-                        className="form-control"
-                        name="major"
-                        onChange={(e) => onInputChange(e)}
-                        defaultValue={formData?.major}
-                        placeholder="Major"
-                      />
-                    </div>
-                  </Col>
+                  
+               
                   <Col size="12">
                     <div className="custom-control custom-switch">
                       <input type="checkbox" className="custom-control-input" id="latest-sale" />
