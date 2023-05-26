@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { ProfesseurContext } from "./ProfesseurContext";
 import { bulkActionOptions } from "../../utils/Utils";
+import { userData } from "../user-manage/UserData";
 
 const ProfesseurListCompact = () => {
   const { contextData } = useContext(ProfesseurContext);
@@ -25,7 +26,7 @@ const ProfesseurListCompact = () => {
   const [actionText, setActionText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemPerPage] = useState(10);
-
+  
   // unselects the data on mount
   useEffect(() => {
     let newData;
@@ -35,7 +36,16 @@ const ProfesseurListCompact = () => {
     });
     setData([...newData]);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+const [prof,setProf]=useState([])
+  useEffect(() => {
+    fetch('http://localhost:8080/user/professeur')
+      .then((response) => response.json())
+      .then((data) => {setProf(data)
+      console.log(data)})
+      .catch((error) => console.error('Error:', error));
+  }, []);
 
+  //http://localhost:8080/user/professeur
   // Changing state value when searching name
   useEffect(() => {
     if (onSearchText !== "") {
@@ -415,7 +425,7 @@ const ProfesseurListCompact = () => {
               </DataTableHead>
               {/*Head*/}
               {currentItems.length > 0
-                ? currentItems.map((item) => {
+                ? prof.map((item) => {
                     return (
                       <DataTableItem key={item.id}>
                         <DataTableRow className="nk-tb-col-check">
@@ -437,11 +447,11 @@ const ProfesseurListCompact = () => {
                               <UserAvatar
                                 theme={item.avatarBg}
                                 className="xs"
-                                text={findUpper(item.name)}
-                                image={item.image}
+                                text={findUpper(item.nom)}
+                                
                               ></UserAvatar>
                               <div className="professeur-name">
-                                <span className="tb-lead">{item.name}</span>
+                                <span className="tb-lead">{item.nom}</span>
                               </div>
                             </div>
                           </Link>
@@ -450,9 +460,9 @@ const ProfesseurListCompact = () => {
                         <DataTableRow size="sm">
                           <span>{item.email}</span>
                         </DataTableRow>
-                        <DataTableRow size="md">
+                        {/* <DataTableRow size="md">
                           <span>{item.phone}</span>
-                        </DataTableRow>
+                        </DataTableRow> */}
                        
                         <DataTableRow size="lg">
                           <span>{item.specialite}</span>

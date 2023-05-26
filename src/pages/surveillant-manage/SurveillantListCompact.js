@@ -64,6 +64,16 @@ const SurveillantListCompact = () => {
   const [itemPerPage, setItemPerPage] = useState(10);
   const [sort, setSortState] = useState("");
 
+
+  const [prof,setProf]=useState([])
+  useEffect(() => {
+    fetch('http://localhost:8080/user/Surveillant')
+      .then((response) => response.json())
+      .then((data) => {setProf(data)
+      console.log(data)})
+      .catch((error) => console.error('Error:', error));
+  }, []);
+
   // Sorting data
   const sortFunc = (params) => {
     let defaultData = data;
@@ -475,7 +485,7 @@ const SurveillantListCompact = () => {
               </DataTableHead>
               {/*Head*/}
               {currentItems.length > 0
-                ? currentItems.map((item) => {
+                ? prof.map((item) => {
                     return (
                       <DataTableItem key={item.id}>
                         <DataTableRow className="nk-tb-col-check">
@@ -497,11 +507,10 @@ const SurveillantListCompact = () => {
                               <UserAvatar
                                 theme={item.avatarBg}
                                 className="xs"
-                                text={findUpper(item.name)}
-                                image={item.image}
+                                text={findUpper(item.nom)}
                               ></UserAvatar>
                               <div className="surveillant-name">
-                                <span className="tb-lead">{item.name}</span>
+                                <span className="tb-lead">{item.nom}</span>
                               </div>
                             </div>
                           </Link>
@@ -510,9 +519,9 @@ const SurveillantListCompact = () => {
                         <DataTableRow size="sm">
                           <span>{item.email}</span>
                         </DataTableRow>
-                        <DataTableRow size="md">
+                        {/* <DataTableRow size="md">
                           <span>{item.phone}</span>
-                        </DataTableRow>
+                        </DataTableRow> */}
                        
                         <DataTableRow size="lg">
                           <span>{item.specialite}</span>
@@ -523,7 +532,7 @@ const SurveillantListCompact = () => {
                               item.status === "Active" ? "success" : item.status === "Pending" ? "warning" : "danger"
                             }`}
                           >
-                            {item.status}
+                            {item.prenom}
                           </span>
                         </DataTableRow>
                         <DataTableRow className="nk-tb-col-tools">

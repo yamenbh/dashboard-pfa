@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Block,
   BlockContent,
@@ -21,19 +21,38 @@ import { Link } from "react-router-dom";
 import { users as Allusers} from "./loginInfo";
 
 const Login = () => {
-  const [users, setUsers] = useState(Allusers)
+  const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(false);
   const [passState, setPassState] = useState(false);
   const [errorVal, setError] = useState("");
+  const [user, setUser] = useState('');
+  const [password, setPassword] = useState('');
+  const handleUserChange = (event) => {
+    setUser(event.target.value);
+  };
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  };
+
+  useEffect(() => {
+    fetch('http://localhost:8080/users')
+      .then((response) => response.json())
+      .then((data) => {setUsers(data)
+      console.log(data)})
+      .catch((error) => console.error('Error:', error));
+  }, []);
 
   const onFormSubmit = (formData) => {
     setLoading(true);
-    const myUser = users.find(user=>user.email == formData.name)
-    console.log(users)
 
-    if (myUser && formData.name === myUser.email && formData.passcode === myUser.password) {
+    const foundUser = users.find(
+      (fetchedUser) => user === fetchedUser.email && password === fetchedUser.password
+    );
+
+    if (foundUser) {
       localStorage.setItem("accessToken", "token");
-      localStorage.setItem("currentUser", JSON.stringify(myUser));
+      localStorage.setItem("currentUser", JSON.stringify(foundUser));
       setTimeout(() => {
         window.history.pushState(
           `${process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "/"}`,
@@ -93,6 +112,7 @@ const Login = () => {
                     type="text"
                     id="default-01"
                     name="name"
+                    value={user} onChange={handleUserChange}
                     ref={register({ required: "This field is required" })}
                     defaultValue="info@softnio.com"
                     placeholder="Enter your email address or username"
@@ -127,7 +147,8 @@ const Login = () => {
                     type={passState ? "text" : "password"}
                     id="password"
                     name="passcode"
-                    defaultValue="123456"
+                    value={password}
+                    onChange={handlePasswordChange}
                     ref={register({ required: "This field is required" })}
                     placeholder="Enter your password"
                     className={`form-control-lg form-control ${passState ? "is-hidden" : "is-shown"}`}
