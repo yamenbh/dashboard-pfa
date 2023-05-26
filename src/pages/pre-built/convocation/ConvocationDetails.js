@@ -14,11 +14,11 @@ import {
 import Content from "../../../layout/content/Content";
 import Head from "../../../layout/head/Head";
 import LogoDark from "../../../images/whatsapp.jpg";
-//import { invoiceData } from "./Invoice";
+//import { convocationData } from "./Convocation";
 import { Link } from "react-router-dom";
 
-const InvoiceDetails = ({ match }) => {
-  //const [data] = useState(invoiceData);
+const ConvocationDetails = ({ match }) => {
+  //const [data] = useState(convocationData);
   // const [user, setUser] = useState();
 
   const [currentUser, setCurentUser] = useState()
@@ -48,13 +48,13 @@ const InvoiceDetails = ({ match }) => {
                 </BlockDes>
               </BlockHeadContent>
               <BlockHeadContent>
-                <Link to={`${process.env.PUBLIC_URL}/invoice-list`}>
+                <Link to={`${process.env.PUBLIC_URL}/Convocation-list`}>
                   <Button color="light" outline className="bg-white d-none d-sm-inline-flex">
                     <Icon name="arrow-left"></Icon>
                     <span>Back</span>
                   </Button>
                 </Link>
-                <Link to={`${process.env.PUBLIC_URL}/invoice-list`}>
+                <Link to={`${process.env.PUBLIC_URL}/Convocation-list`}>
                   <Button color="light" outline className="btn-icon bg-white d-inline-flex d-sm-none">
                     <Icon name="arrow-left"></Icon>
                   </Button>
@@ -66,7 +66,7 @@ const InvoiceDetails = ({ match }) => {
           <Block>
             <div className="invoice">
               <div className="invoice-action">
-                <Link to={`${process.env.PUBLIC_URL}/invoice-print/${currentUser?.id}`} target="_blank">
+                <Link to={`${process.env.PUBLIC_URL}/convocation-print/${currentUser?.id}`} target="_blank">
                   <Button size="lg" color="primary" outline className="btn-icon btn-white btn-dim">
                     <Icon name="printer-fill"></Icon>
                   </Button>
@@ -133,4 +133,4 @@ const InvoiceDetails = ({ match }) => {
     </React.Fragment>
   );
 };
-export default InvoiceDetails;
+export default ConvocationDetails;

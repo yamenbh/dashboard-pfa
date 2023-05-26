@@ -57,7 +57,7 @@ const Homepage = () => {
             </Col>
             <Col xxl="3" sm="6">
               <DataCard
-                title="Users"
+                title="Professeurs"
                 amount={"847"}
                 chart={<DefaultOrderChart />}
               />

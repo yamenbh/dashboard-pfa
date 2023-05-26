@@ -14,7 +14,7 @@ import Error504Classic from "./pages/error/504-classic";
 import Login from "./pages/auth/Login";
 
 
-import InvoicePrint from "./pages/pre-built/invoice/InvoicePrint";
+import ConvocationPrint from "./pages/pre-built/convocation/ConvocationPrint";
 
 const App = (props) => {
 
@@ -28,9 +28,9 @@ const App = (props) => {
       <Route exact path={`${process.env.PUBLIC_URL}/auth-login`} component={Login}></Route>
   
       {/* Print Pages */}
-      <Route exact path={`${process.env.PUBLIC_URL}/invoice-print/:id`} component={InvoicePrint}></Route>
+      <Route exact path={`${process.env.PUBLIC_URL}/convocation-print/:id`} component={ConvocationPrint}></Route>
 
-      <Route exact path={`${process.env.PUBLIC_URL}/invoice-print`} component={InvoicePrint}></Route>
+      <Route exact path={`${process.env.PUBLIC_URL}/convocation-print`} component={ConvocationPrint}></Route>
 
       {/*Error Pages*/}
       <Route exact path={`${process.env.PUBLIC_URL}/errors/404-classic`} component={Error404Classic}></Route>

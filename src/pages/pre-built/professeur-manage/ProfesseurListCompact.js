@@ -2,17 +2,17 @@ import React, { useState, useEffect, useContext } from "react";
 import Content from "../../../layout/content/Content";
 import Head from "../../../layout/head/Head";
 import { findUpper } from "../../../utils/Utils";
-import { userData,  filterStatus } from "./UserData";
+import { professeurData,  filterStatus } from "./ProfesseurData";
 import { DropdownMenu,DropdownToggle,UncontrolledDropdown,Modal,ModalBody,DropdownItem,Form,} from "reactstrap";
 import {Block,BlockBetween,BlockDes,BlockHead,BlockHeadContent,BlockTitle,Icon,Col,UserAvatar,PaginationComponent,DataTable,DataTableBody,DataTableHead,DataTableRow, DataTableItem, Button,RSelect,TooltipComponent,
 } from "../../../components/Component";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { UserContext } from "./UserContext";
+import { ProfesseurContext } from "./ProfesseurContext";
 import { bulkActionOptions } from "../../../utils/Utils";
 
-const UserListCompact = () => {
-  const { contextData } = useContext(UserContext);
+const ProfesseurListCompact = () => {
+  const { contextData } = useContext(ProfesseurContext);
   const [data, setData] = contextData;
 
   const [sm, updateSm] = useState(false);
@@ -29,7 +29,7 @@ const UserListCompact = () => {
   // unselects the data on mount
   useEffect(() => {
     let newData;
-    newData = userData.map((item) => {
+    newData = professeurData.map((item) => {
       item.checked = false;
       return item;
     });
@@ -39,7 +39,7 @@ const UserListCompact = () => {
   // Changing state value when searching name
   useEffect(() => {
     if (onSearchText !== "") {
-      const filteredObject = userData.filter((item) => {
+      const filteredObject = professeurData.filter((item) => {
         return (
           item.name.toLowerCase().includes(onSearchText.toLowerCase()) ||
           item.email.toLowerCase().includes(onSearchText.toLowerCase())
@@ -47,7 +47,7 @@ const UserListCompact = () => {
       });
       setData([...filteredObject]);
     } else {
-      setData([...userData]);
+      setData([...professeurData]);
     }
   }, [onSearchText, setData]);
 
@@ -149,7 +149,7 @@ const UserListCompact = () => {
   };
 
   // function to change to suspend property for an item
-  const suspendUser = (id) => {
+  const suspendProfesseur = (id) => {
     let newData = data;
     let index = newData.findIndex((item) => item.id === id);
     newData[index].status = "Suspend";
@@ -196,16 +196,16 @@ const UserListCompact = () => {
 
   return (
     <React.Fragment>
-      <Head title="Users - Compact"></Head>
+      <Head title="Professeurs - Compact"></Head>
       <Content>
         <BlockHead size="sm">
           <BlockBetween>
             <BlockHeadContent>
               <BlockTitle tag="h3" page>
-                Users Listes
+                Professeurs Listes
               </BlockTitle>
               <BlockDes className="text-soft">
-                <p>You have total 2,595 users.</p>
+                <p>You have total 2,595 professeurs.</p>
               </BlockDes>
             </BlockHeadContent>
             <BlockHeadContent>
@@ -330,7 +330,7 @@ const UserListCompact = () => {
                     <input
                       type="text"
                       className="border-transparent form-focus-none form-control"
-                      placeholder="Search by user or email"
+                      placeholder="Search by professeur or email"
                       value={onSearchText}
                       onChange={(e) => onFilterChange(e)}
                     />
@@ -355,7 +355,7 @@ const UserListCompact = () => {
                   </div>
                 </DataTableRow>
                 <DataTableRow>
-                  <span className="sub-text">User</span>
+                  <span className="sub-text">Professeur</span>
                 </DataTableRow>
                 <DataTableRow size="md">
                   <span className="sub-text">Email</span>
@@ -432,15 +432,15 @@ const UserListCompact = () => {
                           </div>
                         </DataTableRow>
                         <DataTableRow>
-                          <Link to={`${process.env.PUBLIC_URL}/user-details-regular/${item.id}`}>
-                            <div className="user-card">
+                          <Link to={`${process.env.PUBLIC_URL}/professeur-details-regular/${item.id}`}>
+                            <div className="professeur-card">
                               <UserAvatar
                                 theme={item.avatarBg}
                                 className="xs"
                                 text={findUpper(item.name)}
                                 image={item.image}
                               ></UserAvatar>
-                              <div className="user-name">
+                              <div className="professeur-name">
                                 <span className="tb-lead">{item.name}</span>
                               </div>
                             </div>
@@ -480,12 +480,12 @@ const UserListCompact = () => {
                             </li>
                             {item.status !== "Suspend" && (
                               <React.Fragment>
-                                <li className="nk-tb-action-hidden" onClick={() => suspendUser(item.id)}>
+                                <li className="nk-tb-action-hidden" onClick={() => suspendProfesseur(item.id)}>
                                   <TooltipComponent
                                     tag="a"
                                     containerClassName="btn btn-trigger btn-icon"
                                     id={"suspend" + item.id}
-                                    icon="user-cross-fill"
+                                    icon="professeur-cross-fill"
                                     direction="top"
                                     text="Suspend"
                                   />
@@ -514,7 +514,7 @@ const UserListCompact = () => {
                                     {item.status !== "Suspend" && (
                                       <React.Fragment>
                                         <li className="divider"></li>
-                                        <li onClick={() => suspendUser(item.id)}>
+                                        <li onClick={() => suspendProfesseur(item.id)}>
                                           <DropdownItem
                                             tag="a"
                                             href="#suspend"
@@ -523,7 +523,7 @@ const UserListCompact = () => {
                                             }}
                                           >
                                             <Icon name="na"></Icon>
-                                            <span>Suspend User</span>
+                                            <span>Suspend Professeur</span>
                                           </DropdownItem>
                                         </li>
                                       </React.Fragment>
@@ -568,7 +568,7 @@ const UserListCompact = () => {
               <Icon name="cross-sm"></Icon>
             </a>
             <div className="p-2">
-              <h5 className="title">Add User</h5>
+              <h5 className="title">Add Professeur</h5>
               <div className="mt-4">
                 <Form className="row gy-4" onSubmit={handleSubmit(onFormSubmit)}>
                   <Col md="6">
@@ -643,7 +643,7 @@ const UserListCompact = () => {
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
                         <Button color="primary" size="md" type="submit">
-                          Add User
+                          Add Professeur
                         </Button>
                       </li>
                       <li>
@@ -678,7 +678,7 @@ const UserListCompact = () => {
               <Icon name="cross-sm"></Icon>
             </a>
             <div className="p-2">
-              <h5 className="title">Update User</h5>
+              <h5 className="title">Update Professeur</h5>
               <div className="mt-4">
                 <Form className="row gy-4" onSubmit={handleSubmit(onEditSubmit)}>
                   <Col md="6">
@@ -762,7 +762,7 @@ const UserListCompact = () => {
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
                         <Button color="primary" size="md" type="submit">
-                          Update User
+                          Update Professeur
                         </Button>
                       </li>
                       <li>
@@ -788,4 +788,4 @@ const UserListCompact = () => {
     </React.Fragment>
   );
 };
-export default UserListCompact;
+export default ProfesseurListCompact;

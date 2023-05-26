@@ -10,7 +10,7 @@ const menu = [
     icon: "users",
     text: "Gestion Professeurs",
     active: false,
-    link: "/user-list-compact",
+    link: "/professeur-list-compact",
   },
   {
     icon: "users",
@@ -37,7 +37,7 @@ const menu = [
     icon: "file-docs",
     text: "Convocations",
     active: false,
-    link: "/invoice-list",
+    link: "/convocation-list",
    
   },
  

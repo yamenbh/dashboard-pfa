@@ -14,10 +14,10 @@ import {
   PaginationComponent,
 } from "../../../components/Component";
 import { Link } from "react-router-dom";
-import { invoiceData } from "./Invoice";
+import { convocationData } from "./Convocation";
 
-const InvoiceList = () => {
-  const [data, setData] = useState(invoiceData);
+const ConvocationList = () => {
+  const [data, setData] = useState(convocationData);
   const [onSearch, setonSearch] = useState(true);
   const [onSearchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -46,12 +46,12 @@ const InvoiceList = () => {
   // Changing state value when searching name
   useEffect(() => {
     if (onSearchText !== "") {
-      const filteredObject = invoiceData.filter((item) => {
+      const filteredObject = convocationData.filter((item) => {
         return item.orderId.toLowerCase().includes(onSearchText.toLowerCase());
       });
       setData([...filteredObject]);
     } else {
-      setData([...invoiceData]);
+      setData([...convocationData]);
     }
   }, [onSearchText]);
 
@@ -73,7 +73,7 @@ const InvoiceList = () => {
 
   return (
     <React.Fragment>
-      <Head title="Invoice List"></Head>
+      <Head title="Convocation List"></Head>
       <Content>
         <BlockHead size="sm">
           <BlockBetween>
@@ -225,7 +225,7 @@ const InvoiceList = () => {
                             <tr className="tb-odr-item" key={item.id}>
                               <td className="tb-odr-info">
                                 <span className="tb-odr-id">
-                                  <Link to={`${process.env.PUBLIC_URL}/invoice-details/${item.id}`}>
+                                  <Link to={`${process.env.PUBLIC_URL}/convocation-details/${item.id}`}>
                                     {item.orderId}
                                   </Link>
                                 </span>
@@ -233,18 +233,18 @@ const InvoiceList = () => {
                               </td>
                               <td className="tb-odr-action">
                                 <div className="tb-odr-btns d-none d-sm-inline">
-                                  <Link to={`${process.env.PUBLIC_URL}/invoice-print/${item.id}`} target="_blank">
+                                  <Link to={`${process.env.PUBLIC_URL}/convocation-print/${item.id}`} target="_blank">
                                     <Button color="primary" size="sm" className="btn-icon btn-white btn-dim">
                                       <Icon name="printer-fill"></Icon>
                                     </Button>
                                   </Link>
-                                  <Link to={`${process.env.PUBLIC_URL}/invoice-details/${item.id}`}>
+                                  <Link to={`${process.env.PUBLIC_URL}/convocation-details/${item.id}`}>
                                     <Button color="primary" size="sm" className="btn btn-dim">
                                       View
                                     </Button>
                                   </Link>
                                 </div>
-                                <Link to={`${process.env.PUBLIC_URL}/invoice-details/${item.id}`}>
+                                <Link to={`${process.env.PUBLIC_URL}/convocation-details/${item.id}`}>
                                   <Button className="btn-pd-auto d-sm-none">
                                     <Icon name="chevron-right"></Icon>
                                   </Button>
@@ -279,4 +279,4 @@ const InvoiceList = () => {
     </React.Fragment>
   );
 };
-export default InvoiceList;
+export default ConvocationList;

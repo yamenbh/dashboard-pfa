@@ -1,4 +1,4 @@
-export const invoiceData = [
+export const convocationData = [
   {
     id: 1,
     orderId: "108293",
@@ -15,10 +15,10 @@ export const invoiceData = [
     email: "imad@softnio.com",
     phone: "+212 684749518",
     date: "23 Jan 2019, 10:45pm",
-    invoiceItem1: "500.00",
-    invoiceItem2: "500.00",
-    invoiceItem3: "1000.00",
-    invoiceItem4: "40.00",
+    convocationItem1: "500.00",
+    convocationItem2: "500.00",
+    convocationItem3: "1000.00",
+    convocationItem4: "40.00",
     totalAmount: "2300.00",
     status: "Complete"
   },

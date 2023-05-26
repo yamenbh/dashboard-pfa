@@ -3,9 +3,9 @@ import { Button, Icon, Block } from "../../../components/Component";
 import Content from "../../../layout/content/Content";
 import Head from "../../../layout/head/Head";
 import LogoDark from "../../../images/whatsapp.jpg";
-import { invoiceData } from "./Invoice";
+import { convocationData } from "./Convocation";
 import QRCode from "react-qr-code";
-const InvoicePrint = ({ match }) => {
+const ConvocationPrint = ({ match }) => {
   const [currentUser, setCurentUser] = useState()
 
   useEffect(()=>{
@@ -29,12 +29,12 @@ const InvoicePrint = ({ match }) => {
  */
   return (
     <body className="bg-white">
-      <Head title="Invoice Print"></Head>
+      <Head title="Convocation Print"></Head>
       {currentUser && (
         <Content>
           <Block>
-            <div className="invoice invoice-print">
-              <div className="invoice-action">
+            <div className="convocation convocation-print">
+              <div className="convocation-action">
                 <Button
                   size="lg"
                   color="primary"
@@ -45,15 +45,15 @@ const InvoicePrint = ({ match }) => {
                   <Icon name="printer-fill"></Icon>
                 </Button>
               </div>
-              <div className="invoice-wrap">
-                <div className="invoice-brand text-center">
+              <div className="convocation-wrap">
+                <div className="convocation-brand text-center">
                   <img src={LogoDark} alt="" />
                 </div>
 
-                <div className="invoice-head">
-                  <div className="invoice-contact">
+                <div className="convocation-head">
+                  <div className="convocation-contact">
                     <span className="overline-title">Convocation To</span>
-                    <div className="invoice-contact-info">
+                    <div className="convocation-contact-info">
                       <h4 className="title">{currentUser?.name}</h4>
                       <ul className="list-plain">
                         <li>
@@ -69,32 +69,32 @@ const InvoicePrint = ({ match }) => {
                       </ul>
                     </div>
                   </div>
-                  <div className="invoice-desc">
+                  <div className="convocation-desc">
                     <h3 className="title">Convocation</h3>
                     <ul className="list-plain">
-                      <li className="invoice-id">
+                      <li className="convocation-id">
                         <QRCode value= {currentUser?.orderId}/>
                         <span>Convocation ID</span>:<span>{currentUser?.orderId}</span>
                       </li>
-                      <li className="invoice-date">
+                      <li className="convocation-date">
                         <span>Date</span>:<span>{currentUser?.dateExam.split(",")[0]}</span>
                       </li>
                     </ul>
                   </div>
                 </div>
 
-                <div className="invoice-bills">
+                <div className="convocation-bills">
                   <div className="table-responsive">
                   <div>
                       <p>
                         Dear <span>{currentUser?.name}</span> , <br/>
-                      The exams will be held on <span className="invoice-date" >{currentUser?.dateExam}</span> and will cover the material taught throughout the semester. We ask that you arrive at least 30 minutes before the start of the exam to ensure that you have enough time to find your seat and get settled.
+                      The exams will be held on <span className="convocation-date" >{currentUser?.dateExam}</span> and will cover the material taught throughout the semester. We ask that you arrive at least 30 minutes before the start of the exam to ensure that you have enough time to find your seat and get settled.
 
 <br/><br/>Please be aware that you will need to bring your student ID and any necessary materials (e.g. pens, pencils, calculators) to the exam. Additionally, electronic devices such as smartphones, laptops, or tablets are not allowed during the exam
                       </p><br/>
                     </div> 
                     <div className="nk-notes ff-italic fs-12px text-soft">
-                      Invoice was created on a computer and is valid without the signature and seal.
+                      Convocation was created on a computer and is valid without the signature and seal.
                     </div>
                   </div>
                 </div>
@@ -107,4 +107,4 @@ const InvoicePrint = ({ match }) => {
   );
 };
 
-export default InvoicePrint;
+export default ConvocationPrint;
